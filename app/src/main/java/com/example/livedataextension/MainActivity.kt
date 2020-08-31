@@ -2,10 +2,13 @@ package com.example.livedataextension
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.*
 import com.example.livedataextension.databinding.ActivityMainBinding
 import kotlin.concurrent.thread
+
+private const val TAG = "MainActivity"
 
 /**
  * Activity
@@ -35,11 +38,15 @@ class MainViewModel : ViewModel() {
     val fetchBtn: MutableLiveData<Boolean> = MutableLiveData()
     val songTitle: LiveData<String> =
         fetchBtn
-            .switchMap { repository.fetchSongInfo() }
+            .switchMap {
+                repository.fetchSongInfo()
+                repository.observeSongInfo()
+            }
             .filterNullMap()
-            .combineWith(repository.fetchMVInfo()) { songData1, mvData -> Pair(songData1, mvData) }
-            .map { "${it.first?.singer}: ${it?.first?.songName} : ${it?.second?.name}" }
-            .delay(1000)
+            .log { Log.d(TAG, "songInfoRemote: $it") }
+            .map { "${it.singer} : ${it.songName}" }
+            .toMutable()
+            .emitter { "正在加载..." }
 
     fun onBtnClick() {
         fetchBtn.postValue(true)
@@ -49,23 +56,29 @@ class MainViewModel : ViewModel() {
 /**
  * Repository
  */
-class MainRepository() {
-    fun fetchSongInfo(): LiveData<SongData> {
-        val result = MutableLiveData<SongData>()
-        thread {
-            Thread.sleep(1000)
-            result.postValue(SongData("七里香", "周杰伦"))
-        }
-        return result
+class MainRepository {
+
+    private val songData = MutableLiveData<SongData>()
+
+    fun observeSongInfo() = songData
+
+    fun fetchSongInfo() {
+        fetchSongInfoRemote()
+        fetchSongInfoLocal()
     }
 
-    fun fetchMVInfo(): LiveData<MVData> {
-        val result = MutableLiveData<MVData>()
+    private fun fetchSongInfoRemote() {
         thread {
-            Thread.sleep(1000)
-            result.postValue(MVData("Mojito", "周杰伦"))
+            Thread.sleep(2000)
+            songData.postValue(SongData("七里香", "周杰伦"))
         }
-        return result
+    }
+
+    fun fetchSongInfoLocal() {
+        thread {
+            Thread.sleep(500)
+            songData.postValue(SongData("泡沫", "邓紫棋"))
+        }
     }
 }
 
@@ -73,4 +86,3 @@ class MainRepository() {
  * Data Bean
  */
 data class SongData(val songName: String, val singer: String)
-data class MVData(val name: String, val singer: String)

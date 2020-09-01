@@ -1,2 +1,2 @@
 # LiveDataExtensions
-Android LiveData的一些扩展方法，类似于RxJava的操作符，基于kotlin实现
+Android LiveData的一些扩展方法，有点类似于RxJava的操作符，基于kotlin实现

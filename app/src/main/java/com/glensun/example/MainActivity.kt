@@ -1,12 +1,17 @@
-package com.example.livedataextension
+package com.glensun.example
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.*
-import com.example.livedataextension.databinding.ActivityMainBinding
+import com.glensun.livedataextension.emitter
+import com.glensun.livedataextension.filterNullMap
+import com.glensun.livedataextension.log
+import com.glensun.livedataextension.toMutable
 import kotlin.concurrent.thread
+import com.glensun.livedataextension.R
+import com.glensun.livedataextension.databinding.ActivityMainBinding
 
 private const val TAG = "MainActivity"
 

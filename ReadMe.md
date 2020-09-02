@@ -4,7 +4,7 @@ LiveDataExtensions - Android LiveData Extensions for Kotlin, use like RxJava ope
 
 LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
-，例如
+例子：
 
 1. combineWith，几个LiveData联合触发
 ```

@@ -1,17 +1,12 @@
 package com.glensun.example
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import androidx.databinding.DataBindingUtil
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
-import com.glensun.livedataextension.emitter
-import com.glensun.livedataextension.filterNullMap
-import com.glensun.livedataextension.log
-import com.glensun.livedataextension.toMutable
-import kotlin.concurrent.thread
+import com.glensun.livedataextension.*
 import com.glensun.livedataextension.R
-import com.glensun.livedataextension.databinding.ActivityMainBinding
+import kotlin.concurrent.thread
 
 private const val TAG = "MainActivity"
 
@@ -19,19 +14,10 @@ private const val TAG = "MainActivity"
  * Activity
  */
 class MainActivity : AppCompatActivity() {
-    // ViewModel
-    private lateinit var viewModel: MainViewModel
 
-    // DataBinding
-    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // view model
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        // data binding
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        binding.lifecycleOwner = this
-        binding.viewmodel = viewModel
+        setContentView(R.layout.activity_main)
     }
 }
 

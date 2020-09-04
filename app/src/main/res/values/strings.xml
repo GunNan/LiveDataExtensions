@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">LiveDataExtension</string>
     <string name="combine">combine</string>
+    <string name="get_local_data">获取本地数据</string>
+    <string name="get_remote_singer">获取网络歌手数据</string>
+    <string name="get_remote_song">获取网络歌曲数据</string>
 </resources>

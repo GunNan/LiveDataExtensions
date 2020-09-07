@@ -209,3 +209,8 @@ fun <X> LiveData<X>.log(printer: (X) -> Unit): LiveData<X> {
         it
     }
 }
+
+// 对于一个Boolean类型的LiveData，判断其值是否为真
+fun LiveData<Boolean>.isTrue(): Boolean {
+    return this.value == true
+}

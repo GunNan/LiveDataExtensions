@@ -4,11 +4,6 @@ import android.os.Handler
 import android.os.Looper
 import androidx.lifecycle.*
 
-/**
- * Created by glensun on 2020/7/16 5:04 PM.
- * Copyright (c) 2020 Tencent. All rights reserved.
- */
-
 // 多个LiveData联合触发
 fun <T, K, R> LiveData<T>.combineWith(
         liveData: LiveData<K>?,

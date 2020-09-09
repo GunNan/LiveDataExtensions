@@ -1,13 +1,8 @@
 package com.glensun.example
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import kotlin.concurrent.thread
 
-/**
- * Created by glensun on 2020/9/4 4:29 PM.
- * Copyright (c) 2020 Tencent. All rights reserved.
- */
 class CombineExampleRepository {
 
     val localSinger = MutableLiveData<Singer>()

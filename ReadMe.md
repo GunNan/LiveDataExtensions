@@ -4,15 +4,15 @@ LiveDataExtensions - Android LiveData Extensions for Kotlin, use like RxJava ope
 
 LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
-## 使用
+## API说明
 
  - `combineWith`  多个liveData合并产生一个新的liveData
 ```
-val firstName = MutableLiveData<String>()
-val secondName = MutableLiveData<String>()
-val fullName = firstName.combineWith(secondName){firstName,secondName-> "$firstName, $secondName"}
-firstName.value = "glen"  // fullName 将会触发glen
-secondName.value = "sun"  // fullName 将会触发glen, sun
+    val firstName = MutableLiveData<String>()
+    val secondName = MutableLiveData<String>()
+    val fullName = firstName.combineWith(secondName){firstName,secondName-> "$firstName, $secondName"}
+    firstName.value = "glen"  // fullName 将会触发glen
+    secondName.value = "sun"  // fullName 将会触发glen, sun
 ```
 
 例子：

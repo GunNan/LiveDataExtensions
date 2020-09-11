@@ -197,15 +197,32 @@ fun <X> MutableLiveData<X>.emitter(block: () -> X): MutableLiveData<X> {
     return this
 }
 
+
 // 打个log
 fun <X> LiveData<X>.log(printer: (X) -> Unit): LiveData<X> {
-    return this.map {
-        printer(it)
-        it
-    }
+    val result = MediatorLiveData<X>()
+    result.addSource(this, object : Observer<X> {
+        override fun onChanged(x: X) {
+            printer(x)
+            result.postValue(x)
+        }
+    })
+    return result
 }
 
 // 对于一个Boolean类型的LiveData，判断其值是否为真
 fun LiveData<Boolean>.isTrue(): Boolean {
     return this.value == true
 }
+
+// 覆盖原来的map方法，因为原来的方法没有做空判断，经常发生crash，没log不好定位
+inline fun <X, Y> LiveData<X>.map(crossinline transform: (X?) -> Y): LiveData<Y> =
+    Transformations.map(this) { transform(it) }
+
+
+inline fun <X, Y> LiveData<X>.switchMap(
+    crossinline transform: (X?) -> LiveData<Y>
+): LiveData<Y> = Transformations.switchMap(this) { transform(it) }
+
+inline fun <X> LiveData<X>.distinctUntilChanged(): LiveData<X> =
+    Transformations.distinctUntilChanged(this)

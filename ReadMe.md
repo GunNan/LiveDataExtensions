@@ -27,8 +27,8 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
     val repository = merge(localData, remoteData) {
                         dataSources -> "${dataSources.joinToString()}"
                     }
-    localData.value = "glen"  // repository 将会触发glen
-    remoteData.value = "sun"  // repository 将会触发glen, sun
+    localData.value = "glen"  // repository 将会触发[glen]
+    remoteData.value = "sun"  // repository 将会触发[glen, sun]
 ```
 
 

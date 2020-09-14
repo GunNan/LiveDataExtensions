@@ -6,6 +6,8 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
 ## API说明
 
+**Combine**
+
  - `combineWith`  多个liveData合并产生一个新的liveData
 ```
     val firstName = MutableLiveData<String>()
@@ -16,6 +18,19 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
     firstName.value = "glen"  // fullName 将会触发glen
     secondName.value = "sun"  // fullName 将会触发glen, sun
 ```
+
+ - `merge`  多个liveData合并触发一个List
+```
+    val localData = MutableLiveData<String>()
+    val remoteData = MutableLiveData<String>()
+
+    val repository = merge(localData, remoteData) {
+                        dataSources -> "${dataSources.joinToString()}"
+                    }
+    localData.value = "glen"  // repository 将会触发glen
+    remoteData.value = "sun"  // repository 将会触发glen, sun
+```
+
 
 例子：
 

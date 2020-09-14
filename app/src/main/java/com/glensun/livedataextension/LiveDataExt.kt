@@ -228,11 +228,9 @@ inline fun <X> LiveData<X>.distinctUntilChanged(): LiveData<X> =
     Transformations.distinctUntilChanged(this)
 
 
-
 fun <T> merge(vararg liveDatas: LiveData<T>): LiveData<List<T?>> {
     return merge(liveDatas.toList())
 }
-
 
 fun <T> merge(liveDatas: List<LiveData<T>>): LiveData<List<T?>> {
     val result = MediatorLiveData<List<T?>>()

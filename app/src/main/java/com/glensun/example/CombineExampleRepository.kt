@@ -15,7 +15,7 @@ class CombineExampleRepository {
 
     fun fetchLocalData() {
         thread {
-            Thread.sleep(1000)
+            Thread.sleep(100)
             localSinger.postValue(Singer("邓紫棋", "123"))
             localSong.postValue(Song("泡沫", 123))
         }

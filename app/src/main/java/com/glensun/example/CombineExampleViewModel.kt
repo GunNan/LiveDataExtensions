@@ -6,6 +6,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.glensun.livedataextension.combineWith
 import com.glensun.livedataextension.log
+import com.glensun.livedataextension.map
+import com.glensun.livedataextension.merge
 
 private const val TAG = "CombineExampleViewModel"
 
@@ -26,6 +28,15 @@ class CombineExampleViewModel : ViewModel(), LifecycleObserver {
                 localSinger?.singer + ": " + localSong?.song
             }
         }.log { Log.d(TAG, "singerSong $it") }
+
+
+//    val mergeString: LiveData<String> =
+//        merge(
+//            repository.remoteSinger.map { it?.singer },
+//            repository.localSong.map { it?.song })
+//            .map {
+//                "${it?.joinToString()}"
+//            }
 
     fun onFetchLocalClick() {
         repository.fetchLocalData()

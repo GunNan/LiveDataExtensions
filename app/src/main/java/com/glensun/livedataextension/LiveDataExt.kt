@@ -226,3 +226,47 @@ inline fun <X, Y> LiveData<X>.switchMap(
 
 inline fun <X> LiveData<X>.distinctUntilChanged(): LiveData<X> =
     Transformations.distinctUntilChanged(this)
+
+
+
+fun <T> merge(vararg liveDatas: LiveData<T>): LiveData<List<T?>> {
+    return merge(liveDatas.toList())
+}
+
+
+fun <T> merge(liveDatas: List<LiveData<T>>): LiveData<List<T?>> {
+    val result = MediatorLiveData<List<T?>>()
+
+    liveDatas.forEachIndexed { index, liveData ->
+        result.addSource(liveData) {
+            var resultList = result.value?.toMutableList()
+            if (resultList == null) {
+                resultList = MutableList(liveDatas.size) { null }
+            }
+            resultList[index] = it
+
+            result.postValue(resultList)
+        }
+    }
+    return result
+}
+
+fun <T> LiveData<List<T?>>.merge(liveData: LiveData<T>): LiveData<List<T?>> {
+    val result = MediatorLiveData<List<T?>>()
+    result.addSource(this, object : Observer<List<T?>> {
+        override fun onChanged(it: List<T?>?) {
+            it?.toMutableList()?.add(liveData.value)
+            result.postValue(it)
+        }
+    }
+    )
+    result.addSource(liveData, object : Observer<T> {
+        override fun onChanged(it: T) {
+            val list = this@merge.value
+            list?.toMutableList()?.add(it)
+            result.postValue(list)
+        }
+
+    })
+    return result
+}

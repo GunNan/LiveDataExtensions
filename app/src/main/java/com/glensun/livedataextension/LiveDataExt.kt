@@ -6,8 +6,8 @@ import androidx.lifecycle.*
 
 // 多个LiveData联合触发
 fun <T, K, R> LiveData<T>.combineWith(
-        liveData: LiveData<K>?,
-        block: (T?, K?) -> R
+    liveData: LiveData<K>?,
+    block: (T?, K?) -> R
 ): LiveData<R> {
     val result = MediatorLiveData<R>()
     result.addSource(this) {
@@ -22,9 +22,9 @@ fun <T, K, R> LiveData<T>.combineWith(
 }
 
 fun <T, K, U, R> LiveData<T>.combineWith(
-        liveData1: LiveData<K>?,
-        liveData2: LiveData<U>?,
-        block: (T?, K?, U?) -> R
+    liveData1: LiveData<K>?,
+    liveData2: LiveData<U>?,
+    block: (T?, K?, U?) -> R
 ): LiveData<R> {
     val result = MediatorLiveData<R>()
     result.addSource(this) {
@@ -45,75 +45,110 @@ fun <T, K, U, R> LiveData<T>.combineWith(
 
 
 fun <T, K, U, V, R> LiveData<T>.combineWith(
-        liveData1: LiveData<K>?,
-        liveData2: LiveData<U>?,
-        liveData3: LiveData<V>?,
-        block: (T?, K?, U?, V?) -> R
+    liveData1: LiveData<K>?,
+    liveData2: LiveData<U>?,
+    liveData3: LiveData<V>?,
+    block: (T?, K?, U?, V?) -> R
 ): LiveData<R> {
     val result = MediatorLiveData<R>()
     result.addSource(this) {
-        result.value = block.invoke(this.value, liveData1?.value, liveData2?.value, liveData3?.value)
+        result.value =
+            block.invoke(this.value, liveData1?.value, liveData2?.value, liveData3?.value)
     }
     if (liveData1 != null) {
         result.addSource(liveData1) {
-            result.value = block.invoke(this.value, liveData1.value, liveData2?.value, liveData3?.value)
+            result.value =
+                block.invoke(this.value, liveData1.value, liveData2?.value, liveData3?.value)
         }
     }
     if (liveData2 != null) {
         result.addSource(liveData2) {
-            result.value = block.invoke(this.value, liveData1?.value, liveData2.value, liveData3?.value)
+            result.value =
+                block.invoke(this.value, liveData1?.value, liveData2.value, liveData3?.value)
         }
     }
     if (liveData3 != null) {
         result.addSource(liveData3) {
-            result.value = block.invoke(this.value, liveData1?.value, liveData2?.value, liveData3.value)
+            result.value =
+                block.invoke(this.value, liveData1?.value, liveData2?.value, liveData3.value)
         }
     }
     return result
 }
 
 fun <T, K, U, V, R, S> LiveData<T>.combineWith(
-        liveData1: LiveData<K>?,
-        liveData2: LiveData<U>?,
-        liveData3: LiveData<V>?,
-        liveData4: LiveData<R>?,
-        block: (T?, K?, U?, V?, R?) -> S
+    liveData1: LiveData<K>?,
+    liveData2: LiveData<U>?,
+    liveData3: LiveData<V>?,
+    liveData4: LiveData<R>?,
+    block: (T?, K?, U?, V?, R?) -> S
 ): LiveData<S> {
     val result = MediatorLiveData<S>()
     result.addSource(this) {
-        result.value = block.invoke(this.value, liveData1?.value, liveData2?.value, liveData3?.value, liveData4?.value)
+        result.value = block.invoke(
+            this.value,
+            liveData1?.value,
+            liveData2?.value,
+            liveData3?.value,
+            liveData4?.value
+        )
     }
     if (liveData1 != null) {
         result.addSource(liveData1) {
-            result.value = block.invoke(this.value, liveData1.value, liveData2?.value, liveData3?.value, liveData4?.value)
+            result.value = block.invoke(
+                this.value,
+                liveData1.value,
+                liveData2?.value,
+                liveData3?.value,
+                liveData4?.value
+            )
         }
     }
     if (liveData2 != null) {
         result.addSource(liveData2) {
-            result.value = block.invoke(this.value, liveData1?.value, liveData2.value, liveData3?.value, liveData4?.value)
+            result.value = block.invoke(
+                this.value,
+                liveData1?.value,
+                liveData2.value,
+                liveData3?.value,
+                liveData4?.value
+            )
         }
     }
     if (liveData3 != null) {
         result.addSource(liveData3) {
-            result.value = block.invoke(this.value, liveData1?.value, liveData2?.value, liveData3.value, liveData4?.value)
+            result.value = block.invoke(
+                this.value,
+                liveData1?.value,
+                liveData2?.value,
+                liveData3.value,
+                liveData4?.value
+            )
         }
     }
     if (liveData4 != null) {
         result.addSource(liveData4) {
-            result.value = block.invoke(this.value, liveData1?.value, liveData2?.value, liveData3?.value, liveData4.value)
+            result.value = block.invoke(
+                this.value,
+                liveData1?.value,
+                liveData2?.value,
+                liveData3?.value,
+                liveData4.value
+            )
         }
     }
     return result
 }
 
 // 过滤一些触发条件
-fun <X> LiveData<X>.filterMap(predicate: (X) -> Boolean): LiveData<X> = Transformations.switchMap(this) {
-    val result = MutableLiveData<X>()
-    if (predicate(it)) {
-        result.postValue(it)
+fun <X> LiveData<X>.filterMap(predicate: (X) -> Boolean): LiveData<X> =
+    Transformations.switchMap(this) {
+        val result = MutableLiveData<X>()
+        if (predicate(it)) {
+            result.postValue(it)
+        }
+        return@switchMap result
     }
-    return@switchMap result
-}
 
 // 过滤null的情况
 fun <X> LiveData<X>.filterNullMap(): LiveData<X> = filterMap { it != null }
@@ -124,8 +159,10 @@ fun <X> LiveData<X>.delay(milliseconds: Long): LiveData<X> {
     result.addSource(this, object : Observer<X> {
         override fun onChanged(x: X) {
             Handler(Looper.getMainLooper())
-                    .postDelayed({ result.postValue(x) },
-                            milliseconds)
+                .postDelayed(
+                    { result.postValue(x) },
+                    milliseconds
+                )
         }
     })
     return result
@@ -136,9 +173,9 @@ fun <X> LiveData<X>.delay(milliseconds: Long): LiveData<X> {
 fun <X> MutableLiveData<X>.delay(milliseconds: Long): MutableLiveData<Pair<Boolean, X?>> {
     val result = MediatorLiveData<Pair<Boolean, X?>>()
     Handler(Looper.getMainLooper())
-            .postDelayed({
-                result.postValue(Pair(true, this.value))
-            }, milliseconds)
+        .postDelayed({
+            result.postValue(Pair(true, this.value))
+        }, milliseconds)
     result.postValue(Pair(false, this.value))
     return result
 }
@@ -215,10 +252,18 @@ fun LiveData<Boolean>.isTrue(): Boolean {
     return this.value == true
 }
 
-// 覆盖原来的map方法，因为原来的方法没有做空判断，经常发生crash，没log不好定位
-inline fun <X, Y> LiveData<X>.map(crossinline transform: (X?) -> Y): LiveData<Y> =
-    Transformations.map(this) { transform(it) }
-
+/**
+ * React on LiveData changed, map the data by transform
+ */
+inline fun <X, Y> LiveData<X>.map(crossinline transform: (X?) -> Y): LiveData<Y> {
+    val result = MediatorLiveData<Y>()
+    result.addSource(this, object : Observer<X?> {
+        override fun onChanged(x: X?) {
+            result.setValue(transform(x))
+        }
+    })
+    return result
+}
 
 inline fun <X, Y> LiveData<X>.switchMap(
     crossinline transform: (X?) -> LiveData<Y>

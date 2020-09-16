@@ -12,9 +12,9 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 ```
     val name = MutableLiveData<String>()
     val age = MutableLiveData<Int>()
-    val title : LiveData<String> = name.combine(age) { name, age -> "$name, $age" }
+    val title = name.combine(age) { name, age -> "$name, $age" }
     name.value = "glensun"  // title 将会触发glensun, null
-    age.value = 18          // fullName 将会触发glen, 18
+    age.value = 18          // title 将会触发glen, 18
 ```
 
  - `merge`  多个相同类型的liveData合并，产生一个新的liveData

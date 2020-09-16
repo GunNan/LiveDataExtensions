@@ -13,6 +13,8 @@ class CombineExampleViewModel : ViewModel(), LifecycleObserver {
     private val dataA = MutableLiveData<String>()
     private val dataB = MutableLiveData<String>()
     private val dataC = MutableLiveData<String>()
+
+    // If you define a default value, 'combine' will trigger on the begin
     private val clickCount = MutableLiveData<Int>(0)
 
     // show data

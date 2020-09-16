@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.glensun.livedataextension.databinding.CombineExampleFragmentBinding
+import com.glensun.example.databinding.CombineExampleFragmentBinding
 
 class CombineExampleFragment : Fragment() {
 

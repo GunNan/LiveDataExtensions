@@ -1,2 +1,3 @@
+include ':livedataext'
 include ':app'
 rootProject.name = "LiveDataExtension"

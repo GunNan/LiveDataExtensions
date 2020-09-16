@@ -267,12 +267,12 @@ fun LiveData<Boolean>.isTrue(): Boolean {
     return this.value == true
 }
 
-inline fun <X, Y> LiveData<X>.switchMap(
-    crossinline transform: (X?) -> LiveData<Y>
-): LiveData<Y> = Transformations.switchMap(this) { transform(it) }
-
-inline fun <X> LiveData<X>.distinctUntilChanged(): LiveData<X> =
-    Transformations.distinctUntilChanged(this)
+//inline fun <X, Y> LiveData<X>.switchMap(
+//    crossinline transform: (X?) -> LiveData<Y>
+//): LiveData<Y> = Transformations.switchMap(this) { transform(it) }
+//
+//inline fun <X> LiveData<X>.distinctUntilChanged(): LiveData<X> =
+//    Transformations.distinctUntilChanged(this)
 
 
 fun <T> merge(vararg liveDatas: LiveData<T>): LiveData<List<T?>> {

@@ -2,7 +2,7 @@ package com.glensun.example
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.glensun.livedataextension.R
+import com.glensun.example.R
 
 private const val TAG = "MainActivity"
 

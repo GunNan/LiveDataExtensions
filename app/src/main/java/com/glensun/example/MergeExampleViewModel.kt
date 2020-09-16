@@ -15,7 +15,8 @@ class MergeExampleViewModel : ViewModel(), LifecycleObserver {
 
     // show data
     val showData: LiveData<String> =
-        merge(dataA, dataB, dataC)
+        dataA.merge(dataB)
+            .merge(dataC)
 
     fun onGetGlenClick() {
         dataA.value = "glen"

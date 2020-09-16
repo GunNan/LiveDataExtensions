@@ -248,9 +248,23 @@ inline fun <A, B, C, D, E, R> LiveData<A>.combine(
 /**
  * Merge multi LiveData, which has same type
  */
+@MainThread
 inline fun <T> merge(vararg liveDatas: LiveData<T>): LiveData<T> {
     val result = MediatorLiveData<T>()
     liveDatas.forEach { liveData ->
+        result.addSource(liveData) { result.setValue(it) }
+    }
+    return result
+}
+
+/**
+ * Merge with other LiveData
+ */
+@MainThread
+inline fun <T> LiveData<T>.merge(liveData: LiveData<T>?): LiveData<T> {
+    val result = MediatorLiveData<T>()
+    result.addSource(this) { result.setValue(it) }
+    if (liveData != null) {
         result.addSource(liveData) { result.setValue(it) }
     }
     return result

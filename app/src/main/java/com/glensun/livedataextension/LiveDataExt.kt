@@ -2,7 +2,22 @@ package com.glensun.livedataextension
 
 import android.os.Handler
 import android.os.Looper
+import androidx.annotation.MainThread
 import androidx.lifecycle.*
+
+/**
+ * React on LiveData changed, map the data by transform
+ */
+@MainThread
+inline fun <X, Y> LiveData<X>.map(crossinline transform: (X?) -> Y): LiveData<Y> {
+    val result = MediatorLiveData<Y>()
+    result.addSource(this, object : Observer<X?> {
+        override fun onChanged(x: X?) {
+            result.setValue(transform(x))
+        }
+    })
+    return result
+}
 
 // 多个LiveData联合触发
 fun <T, K, R> LiveData<T>.combineWith(
@@ -250,19 +265,6 @@ fun <X> LiveData<X>.log(printer: (X) -> Unit): LiveData<X> {
 // 对于一个Boolean类型的LiveData，判断其值是否为真
 fun LiveData<Boolean>.isTrue(): Boolean {
     return this.value == true
-}
-
-/**
- * React on LiveData changed, map the data by transform
- */
-inline fun <X, Y> LiveData<X>.map(crossinline transform: (X?) -> Y): LiveData<Y> {
-    val result = MediatorLiveData<Y>()
-    result.addSource(this, object : Observer<X?> {
-        override fun onChanged(x: X?) {
-            result.setValue(transform(x))
-        }
-    })
-    return result
 }
 
 inline fun <X, Y> LiveData<X>.switchMap(

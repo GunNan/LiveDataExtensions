@@ -342,7 +342,7 @@ inline fun <A, B, C, D, E, R> combine(
 inline fun <T> merge(vararg liveDatas: LiveData<T>): LiveData<T> {
     val result = MediatorLiveData<T>()
     liveDatas.forEach { liveData ->
-        result.addSource(liveData) { result.setValue(it) }
+        result.addSource(liveData) { it -> result.setValue(it) }
     }
     return result
 }
@@ -356,6 +356,472 @@ inline fun <T> LiveData<T>.merge(liveData: LiveData<T>?): LiveData<T> {
     result.addSource(this) { result.setValue(it) }
     if (liveData != null) {
         result.addSource(liveData) { result.setValue(it) }
+    }
+    return result
+}
+
+/**
+ * Combine with multi LiveData changed, map the data by transform
+ */
+@MainThread
+inline fun <A, B, R> LiveData<A>.combineNonNull(
+    liveData: LiveData<B>?,
+    crossinline transform: (A, B) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    result.addSource(this) { a ->
+        val liveDataValue = liveData?.value
+        if (a != null && liveDataValue != null) {
+            result.setValue(transform(a, liveDataValue))
+        }
+    }
+    if (liveData != null) {
+        result.addSource(liveData) { b ->
+            val liveDataValue = this@combineNonNull.value
+            if (b != null && liveDataValue != null) {
+                result.setValue(transform(liveDataValue, b))
+            }
+        }
+    }
+    return result
+}
+
+
+/**
+ * Combine with multi LiveData changed, map the data by transform
+ */
+@MainThread
+inline fun <A, B, C, R> LiveData<A>.combineNonNull(
+    liveData1: LiveData<B>?,
+    liveData2: LiveData<C>?,
+    crossinline transform: (A, B, C) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    result.addSource(this) { a ->
+        val liveData1Value = liveData1?.value
+        val liveData2Value = liveData2?.value
+        if (a != null && liveData1Value != null && liveData2Value != null) {
+            result.setValue(transform(a, liveData1Value, liveData2Value))
+        }
+    }
+    if (liveData1 != null) {
+        result.addSource(liveData1) { b ->
+            val liveDataValue = this@combineNonNull.value
+            val liveData2Value = liveData2?.value
+            if (b != null && liveDataValue != null && liveData2Value != null) {
+                result.setValue(transform(liveDataValue, b, liveData2Value))
+            }
+        }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { c ->
+            val liveDataValue = this@combineNonNull.value
+            val liveData1Value = liveData1?.value
+            if (c != null && liveDataValue != null && liveData1Value != null) {
+                result.setValue(transform(liveDataValue, liveData1Value, c))
+            }
+        }
+    }
+    return result
+}
+
+/**
+ * Combine with multi LiveData changed, map the data by transform
+ */
+@MainThread
+inline fun <A, B, C, D, R> LiveData<A>.combineNonNull(
+    liveData1: LiveData<B>?,
+    liveData2: LiveData<C>?,
+    liveData3: LiveData<D>?,
+    crossinline transform: (A, B, C, D) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    result.addSource(this) { a ->
+        val liveData1Value = liveData1?.value
+        val liveData2Value = liveData2?.value
+        val liveData3Value = liveData3?.value
+        if (a != null && liveData1Value != null && liveData2Value != null && liveData3Value != null) {
+            result.setValue(transform(a, liveData1Value, liveData2Value, liveData3Value))
+        }
+    }
+    if (liveData1 != null) {
+        result.addSource(liveData1) { b ->
+            val liveDataValue = this@combineNonNull.value
+            val liveData2Value = liveData2?.value
+            val liveData3Value = liveData3?.value
+            if (b != null && liveDataValue != null && liveData2Value != null && liveData3Value != null) {
+                result.setValue(transform(liveDataValue, b, liveData2Value, liveData3Value))
+            }
+        }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { c ->
+            val liveDataValue = this@combineNonNull.value
+            val liveData1Value = liveData1?.value
+            val liveData3Value = liveData3?.value
+            if (c != null && liveDataValue != null && liveData1Value != null && liveData3Value != null) {
+                result.setValue(transform(liveDataValue, liveData1Value, c, liveData3Value))
+            }
+        }
+    }
+    if (liveData3 != null) {
+        result.addSource(liveData3) { d ->
+            val liveDataValue = this@combineNonNull.value
+            val liveData1Value = liveData1?.value
+            val liveData2Value = liveData2?.value
+            if (d != null && liveDataValue != null && liveData1Value != null && liveData2Value != null) {
+                result.setValue(transform(liveDataValue, liveData1Value, liveData2Value, d))
+            }
+        }
+    }
+    return result
+}
+
+/**
+ * Combine with multi LiveData changed, map the data by transform
+ */
+@MainThread
+inline fun <A, B, C, D, E, R> LiveData<A>.combineNonNull(
+    liveData1: LiveData<B>?,
+    liveData2: LiveData<C>?,
+    liveData3: LiveData<D>?,
+    liveData4: LiveData<E>?,
+    crossinline transform: (A, B, C, D, E) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    result.addSource(this) { a ->
+        val liveData1Value = liveData1?.value
+        val liveData2Value = liveData2?.value
+        val liveData3Value = liveData3?.value
+        val liveData4Value = liveData4?.value
+        if (a != null && liveData1Value != null && liveData2Value != null && liveData3Value != null && liveData4Value != null) {
+            result.setValue(
+                transform(
+                    a,
+                    liveData1Value,
+                    liveData2Value,
+                    liveData3Value,
+                    liveData4Value
+                )
+            )
+        }
+    }
+    if (liveData1 != null) {
+        result.addSource(liveData1) { b ->
+            val liveDataValue = this@combineNonNull.value
+            val liveData2Value = liveData2?.value
+            val liveData3Value = liveData3?.value
+            val liveData4Value = liveData4?.value
+            if (b != null && liveDataValue != null && liveData2Value != null && liveData3Value != null && liveData4Value != null) {
+                result.setValue(
+                    transform(
+                        liveDataValue,
+                        b,
+                        liveData2Value,
+                        liveData3Value,
+                        liveData4Value
+                    )
+                )
+            }
+        }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { c ->
+            val liveDataValue = this@combineNonNull.value
+            val liveData1Value = liveData1?.value
+            val liveData3Value = liveData3?.value
+            val liveData4Value = liveData4?.value
+            if (c != null && liveDataValue != null && liveData1Value != null && liveData3Value != null && liveData4Value != null) {
+                result.setValue(
+                    transform(
+                        liveDataValue,
+                        liveData1Value,
+                        c,
+                        liveData3Value,
+                        liveData4Value
+                    )
+                )
+            }
+        }
+    }
+    if (liveData3 != null) {
+        result.addSource(liveData3) { d ->
+            val liveDataValue = this@combineNonNull.value
+            val liveData1Value = liveData1?.value
+            val liveData2Value = liveData2?.value
+            val liveData4Value = liveData4?.value
+            if (d != null && liveDataValue != null && liveData1Value != null && liveData2Value != null && liveData4Value != null) {
+                result.setValue(
+                    transform(
+                        liveDataValue,
+                        liveData1Value,
+                        liveData2Value,
+                        d,
+                        liveData4Value
+                    )
+                )
+            }
+        }
+    }
+    if (liveData4 != null) {
+        result.addSource(liveData4) { e ->
+            val liveDataValue = this@combineNonNull.value
+            val liveData1Value = liveData1?.value
+            val liveData2Value = liveData2?.value
+            val liveData3Value = liveData3?.value
+            if (e != null && liveDataValue != null && liveData1Value != null && liveData2Value != null && liveData3Value != null) {
+                result.setValue(
+                    transform(
+                        liveDataValue,
+                        liveData1Value,
+                        liveData2Value,
+                        liveData3Value,
+                        e
+                    )
+                )
+            }
+        }
+    }
+    return result
+}
+
+
+/**
+ * Combine multi LiveDatas, map the data by transform
+ */
+@JvmName("combineNonNullAll")
+@MainThread
+inline fun <A, B, R> combineNonNull(
+    liveData1: LiveData<A>?,
+    liveData2: LiveData<B>?,
+    crossinline transform: (A, B) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    if (liveData1 != null) {
+        result.addSource(liveData1) { a ->
+            val liveData2Value = liveData2?.value
+            if (a != null && liveData2Value != null) {
+                result.setValue(transform(a, liveData2Value))
+            }
+        }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { b ->
+            val liveData1Value = liveData1?.value
+            if (b != null && liveData1Value != null) {
+                result.setValue(transform(liveData1Value, b))
+            }
+        }
+    }
+    return result
+}
+
+/**
+ * Combine multi LiveDatas, map the data by transform
+ */
+@JvmName("combineNonNullAll")
+@MainThread
+inline fun <A, B, C, R> combineNonNull(
+    liveData1: LiveData<A>?,
+    liveData2: LiveData<B>?,
+    liveData3: LiveData<C>?,
+    crossinline transform: (A, B, C) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    if (liveData1 != null) {
+        result.addSource(liveData1) { a ->
+            val liveData2Value = liveData2?.value
+            val liveData3Value = liveData3?.value
+            if (a != null && liveData2Value != null && liveData3Value != null) {
+                result.setValue(transform(a, liveData2Value, liveData3Value))
+            }
+        }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { b ->
+            val liveData1Value = liveData1?.value
+            val liveData3Value = liveData3?.value
+            if (b != null && liveData1Value != null && liveData3Value != null) {
+                result.setValue(transform(liveData1Value, b, liveData3Value))
+            }
+        }
+    }
+    if (liveData3 != null) {
+        result.addSource(liveData3) { c ->
+            val liveData1Value = liveData1?.value
+            val liveData2Value = liveData2?.value
+            if (c != null && liveData1Value != null && liveData2Value != null) {
+                result.setValue(transform(liveData1Value, liveData2Value, c))
+            }
+        }
+    }
+    return result
+}
+
+/**
+ * Combine multi LiveDatas, map the data by transform
+ */
+@JvmName("combineNonNullAll")
+@MainThread
+inline fun <A, B, C, D, R> combineNonNull(
+    liveData1: LiveData<A>?,
+    liveData2: LiveData<B>?,
+    liveData3: LiveData<C>?,
+    liveData4: LiveData<D>?,
+    crossinline transform: (A, B, C, D) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    if (liveData1 != null) {
+        result.addSource(liveData1) { a ->
+            val liveData2Value = liveData2?.value
+            val liveData3Value = liveData3?.value
+            val liveData4Value = liveData4?.value
+            if (a != null && liveData2Value != null && liveData3Value != null && liveData4Value != null) {
+                result.setValue(transform(a, liveData2Value, liveData3Value, liveData4Value))
+            }
+        }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { b ->
+            val liveData1Value = liveData1?.value
+            val liveData3Value = liveData3?.value
+            val liveData4Value = liveData4?.value
+            if (b != null && liveData1Value != null && liveData3Value != null && liveData4Value != null) {
+                result.setValue(transform(liveData1Value, b, liveData3Value, liveData4Value))
+            }
+        }
+    }
+    if (liveData3 != null) {
+        result.addSource(liveData3) { c ->
+            val liveData1Value = liveData1?.value
+            val liveData2Value = liveData2?.value
+            val liveData4Value = liveData4?.value
+            if (c != null && liveData1Value != null && liveData2Value != null && liveData4Value != null) {
+                result.setValue(transform(liveData1Value, liveData2Value, c, liveData4Value))
+            }
+        }
+    }
+    if (liveData4 != null) {
+        result.addSource(liveData4) { d ->
+            val liveData1Value = liveData1?.value
+            val liveData2Value = liveData2?.value
+            val liveData3Value = liveData3?.value
+            if (d != null && liveData1Value != null && liveData2Value != null && liveData3Value != null) {
+                result.setValue(transform(liveData1Value, liveData2Value, liveData3Value, d))
+            }
+        }
+    }
+    return result
+}
+
+/**
+ * Combine multi LiveDatas, map the data by transform
+ */
+@JvmName("combineNonNullAll")
+@MainThread
+inline fun <A, B, C, D, E, R> combineNonNull(
+    liveData1: LiveData<A>?,
+    liveData2: LiveData<B>?,
+    liveData3: LiveData<C>?,
+    liveData4: LiveData<D>?,
+    liveData5: LiveData<E>?,
+    crossinline transform: (A, B, C, D, E) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    if (liveData1 != null) {
+        result.addSource(liveData1) { a ->
+            val liveData2Value = liveData2?.value
+            val liveData3Value = liveData3?.value
+            val liveData4Value = liveData4?.value
+            val liveData5Value = liveData5?.value
+            if (a != null && liveData2Value != null && liveData3Value != null && liveData4Value != null && liveData5Value != null) {
+                result.setValue(
+                    transform(
+                        a,
+                        liveData2Value,
+                        liveData3Value,
+                        liveData4Value,
+                        liveData5Value
+                    )
+                )
+            }
+        }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { b ->
+            val liveData1Value = liveData1?.value
+            val liveData3Value = liveData3?.value
+            val liveData4Value = liveData4?.value
+            val liveData5Value = liveData5?.value
+            if (b != null && liveData1Value != null && liveData3Value != null && liveData4Value != null && liveData5Value != null) {
+                result.setValue(
+                    transform(
+                        liveData1Value,
+                        b,
+                        liveData3Value,
+                        liveData4Value,
+                        liveData5Value
+                    )
+                )
+            }
+        }
+    }
+    if (liveData3 != null) {
+        result.addSource(liveData3) { c ->
+            val liveData1Value = liveData1?.value
+            val liveData2Value = liveData2?.value
+            val liveData4Value = liveData4?.value
+            val liveData5Value = liveData5?.value
+            if (c != null && liveData1Value != null && liveData2Value != null && liveData4Value != null && liveData5Value != null) {
+                result.setValue(
+                    transform(
+                        liveData1Value,
+                        liveData2Value,
+                        c,
+                        liveData4Value,
+                        liveData5Value
+                    )
+                )
+            }
+        }
+    }
+    if (liveData4 != null) {
+        result.addSource(liveData4) { d ->
+            val liveData1Value = liveData1?.value
+            val liveData2Value = liveData2?.value
+            val liveData3Value = liveData3?.value
+            val liveData5Value = liveData5?.value
+            if (d != null && liveData1Value != null && liveData2Value != null && liveData3Value != null && liveData5Value != null) {
+                result.setValue(
+                    transform(
+                        liveData1Value,
+                        liveData2Value,
+                        liveData3Value,
+                        d,
+                        liveData5Value
+                    )
+                )
+            }
+        }
+    }
+    if (liveData5 != null) {
+        result.addSource(liveData5) { e ->
+            val liveData1Value = liveData1?.value
+            val liveData2Value = liveData2?.value
+            val liveData3Value = liveData3?.value
+            val liveData4Value = liveData4?.value
+            if (e != null && liveData1Value != null && liveData2Value != null && liveData3Value != null && liveData4Value != null) {
+                result.setValue(
+                    transform(
+                        liveData1Value,
+                        liveData2Value,
+                        liveData3Value,
+                        liveData4Value,
+                        e
+                    )
+                )
+            }
+        }
     }
     return result
 }

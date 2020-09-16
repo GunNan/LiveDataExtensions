@@ -841,18 +841,37 @@ inline fun <T> LiveData<T>.startWith(default: T): LiveData<T> {
     return defaultLiveData.merge(this)
 }
 
-// 过滤一些触发条件
-fun <X> LiveData<X>.filterMap(predicate: (X) -> Boolean): LiveData<X> =
-    Transformations.switchMap(this) {
-        val result = MutableLiveData<X>()
+/**
+ * Filter some value on LiveData changed
+ */
+@MainThread
+inline fun <X> LiveData<X>.filter(crossinline predicate: (X?) -> Boolean): LiveData<X> {
+    val result = MediatorLiveData<X>()
+    result.addSource(this) {
         if (predicate(it)) {
-            result.postValue(it)
+            result.setValue(it)
         }
-        return@switchMap result
     }
+    return result
+}
 
-// 过滤null的情况
-fun <X> LiveData<X>.filterNullMap(): LiveData<X> = filterMap { it != null }
+/**
+ * Filter null value on LiveData changed
+ */
+@MainThread
+inline fun <X> LiveData<X>.filterNull(): LiveData<X> {
+    val result = MediatorLiveData<X>()
+    result.addSource(this) {
+        if (it != null) {
+            result.setValue(it)
+        }
+    }
+    return result
+}
+
+@MainThread
+inline fun <X> LiveData<X>.distinctUntilChanged(): LiveData<X> =
+    Transformations.distinctUntilChanged(this)
 
 // 延迟发射, 注意LiveData的特点，如果lifecycle的生命周期没走到START，那是不会发射的
 fun <X> LiveData<X>.delay(milliseconds: Long): LiveData<X> {

@@ -9,11 +9,17 @@ import androidx.lifecycle.*
  * React on LiveData changed, map the data by transform
  */
 @MainThread
-inline fun <X, Y> LiveData<X>.map(crossinline transform: (X?) -> Y): LiveData<Y> {
-    val result = MediatorLiveData<Y>()
-    result.addSource(this) { result.setValue(transform(it)) }
-    return result
-}
+inline fun <X, Y> LiveData<X>.map(crossinline transform: (X?) -> Y): LiveData<Y> =
+    Transformations.map(this) { transform(it) }
+
+/**
+ * React on LiveData changed, return a liveData by transform, which can trigger result change
+ */
+@MainThread
+inline fun <X, Y> LiveData<X>.switchMap(
+    crossinline transform: (X?) -> LiveData<Y>
+): LiveData<Y> = Transformations.switchMap(this) { transform(it) }
+
 
 /**
  * Combine with multi LiveData changed, map the data by transform

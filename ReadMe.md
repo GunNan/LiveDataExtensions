@@ -8,14 +8,14 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
 **Combine**
 
- - `combineWith`  多个liveData合并产生一个新的liveData
+ - `combine`  多个liveData合并产生一个新的liveData
 ```
     val firstName = MutableLiveData<String>()
     val secondName = MutableLiveData<String>()
-    val fullName = firstName.combineWith(secondName){
+    val fullName = firstName.combine(secondName){
                         firstName,secondName-> "$firstName, $secondName"
                    }
-    firstName.value = "glen"  // fullName 将会触发glen
+    firstName.value = "glen"  // fullName 将会触发glen, null
     secondName.value = "sun"  // fullName 将会触发glen, sun
 ```
 

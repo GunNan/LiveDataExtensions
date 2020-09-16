@@ -11,144 +11,156 @@ import androidx.lifecycle.*
 @MainThread
 inline fun <X, Y> LiveData<X>.map(crossinline transform: (X?) -> Y): LiveData<Y> {
     val result = MediatorLiveData<Y>()
-    result.addSource(this, object : Observer<X?> {
-        override fun onChanged(x: X?) {
-            result.setValue(transform(x))
-        }
-    })
+    result.addSource(this) { result.setValue(transform(it)) }
     return result
 }
 
-// 多个LiveData联合触发
-fun <T, K, R> LiveData<T>.combineWith(
-    liveData: LiveData<K>?,
-    block: (T?, K?) -> R
+/**
+ * Combine with multi LiveData changed, merge the data by transform
+ */
+@MainThread
+inline fun <A, B, R> LiveData<A>.combine(
+    liveData: LiveData<B>?,
+    crossinline transform: (A?, B?) -> R
 ): LiveData<R> {
     val result = MediatorLiveData<R>()
-    result.addSource(this) {
-        result.value = block.invoke(this.value, liveData?.value)
-    }
+    result.addSource(this) { a -> result.setValue(transform(a, liveData?.value)) }
     if (liveData != null) {
-        result.addSource(liveData) {
-            result.value = block.invoke(this.value, liveData.value)
+        result.addSource(liveData) { b -> result.setValue(transform(this@combine.value, b)) }
+    }
+    return result
+}
+
+/**
+ * Combine with multi LiveData changed, merge the data by transform
+ */
+@MainThread
+inline fun <A, B, C, R> LiveData<A>.combine(
+    liveData1: LiveData<B>?,
+    liveData2: LiveData<C>?,
+    crossinline transform: (A?, B?, C?) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    result.addSource(this) { a ->
+        result.setValue(transform(a, liveData1?.value, liveData2?.value))
+    }
+    if (liveData1 != null) {
+        result.addSource(liveData1) { b ->
+            result.setValue(transform(this@combine.value, b, liveData2?.value))
+        }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { c ->
+            result.setValue(transform(this@combine.value, liveData1?.value, c))
         }
     }
     return result
 }
 
-fun <T, K, U, R> LiveData<T>.combineWith(
-    liveData1: LiveData<K>?,
-    liveData2: LiveData<U>?,
-    block: (T?, K?, U?) -> R
+/**
+ * Combine with multi LiveData changed, merge the data by transform
+ */
+@MainThread
+inline fun <A, B, C, D, R> LiveData<A>.combine(
+    liveData1: LiveData<B>?,
+    liveData2: LiveData<C>?,
+    liveData3: LiveData<D>?,
+    crossinline transform: (A?, B?, C?, D?) -> R
 ): LiveData<R> {
     val result = MediatorLiveData<R>()
-    result.addSource(this) {
-        result.value = block.invoke(this.value, liveData1?.value, liveData2?.value)
+    result.addSource(this) { a ->
+        result.setValue(transform(a, liveData1?.value, liveData2?.value, liveData3?.value))
     }
     if (liveData1 != null) {
-        result.addSource(liveData1) {
-            result.value = block.invoke(this.value, liveData1.value, liveData2?.value)
+        result.addSource(liveData1) { b ->
+            result.setValue(transform(this@combine.value, b, liveData2?.value, liveData3?.value))
         }
     }
     if (liveData2 != null) {
-        result.addSource(liveData2) {
-            result.value = block.invoke(this.value, liveData1?.value, liveData2.value)
-        }
-    }
-    return result
-}
-
-
-fun <T, K, U, V, R> LiveData<T>.combineWith(
-    liveData1: LiveData<K>?,
-    liveData2: LiveData<U>?,
-    liveData3: LiveData<V>?,
-    block: (T?, K?, U?, V?) -> R
-): LiveData<R> {
-    val result = MediatorLiveData<R>()
-    result.addSource(this) {
-        result.value =
-            block.invoke(this.value, liveData1?.value, liveData2?.value, liveData3?.value)
-    }
-    if (liveData1 != null) {
-        result.addSource(liveData1) {
-            result.value =
-                block.invoke(this.value, liveData1.value, liveData2?.value, liveData3?.value)
-        }
-    }
-    if (liveData2 != null) {
-        result.addSource(liveData2) {
-            result.value =
-                block.invoke(this.value, liveData1?.value, liveData2.value, liveData3?.value)
+        result.addSource(liveData2) { c ->
+            result.setValue(transform(this@combine.value, liveData1?.value, c, liveData3?.value))
         }
     }
     if (liveData3 != null) {
-        result.addSource(liveData3) {
-            result.value =
-                block.invoke(this.value, liveData1?.value, liveData2?.value, liveData3.value)
+        result.addSource(liveData3) { d ->
+            result.setValue(transform(this@combine.value, liveData1?.value, liveData2?.value, d))
         }
     }
     return result
 }
 
-fun <T, K, U, V, R, S> LiveData<T>.combineWith(
-    liveData1: LiveData<K>?,
-    liveData2: LiveData<U>?,
-    liveData3: LiveData<V>?,
-    liveData4: LiveData<R>?,
-    block: (T?, K?, U?, V?, R?) -> S
-): LiveData<S> {
-    val result = MediatorLiveData<S>()
-    result.addSource(this) {
-        result.value = block.invoke(
-            this.value,
-            liveData1?.value,
-            liveData2?.value,
-            liveData3?.value,
-            liveData4?.value
+/**
+ * Combine with multi LiveData changed, merge the data by transform
+ */
+@MainThread
+inline fun <A, B, C, D, E, R> LiveData<A>.combine(
+    liveData1: LiveData<B>?,
+    liveData2: LiveData<C>?,
+    liveData3: LiveData<D>?,
+    liveData4: LiveData<E>?,
+    crossinline transform: (A?, B?, C?, D?, E?) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    result.addSource(this) { a ->
+        result.setValue(
+            transform(
+                a,
+                liveData1?.value,
+                liveData2?.value,
+                liveData3?.value,
+                liveData4?.value
+            )
         )
     }
     if (liveData1 != null) {
-        result.addSource(liveData1) {
-            result.value = block.invoke(
-                this.value,
-                liveData1.value,
-                liveData2?.value,
-                liveData3?.value,
-                liveData4?.value
+        result.addSource(liveData1) { b ->
+            result.setValue(
+                transform(
+                    this@combine.value,
+                    b,
+                    liveData2?.value,
+                    liveData3?.value,
+                    liveData4?.value
+                )
             )
         }
     }
     if (liveData2 != null) {
-        result.addSource(liveData2) {
-            result.value = block.invoke(
-                this.value,
-                liveData1?.value,
-                liveData2.value,
-                liveData3?.value,
-                liveData4?.value
+        result.addSource(liveData2) { c ->
+            result.setValue(
+                transform(
+                    this@combine.value,
+                    liveData1?.value,
+                    c,
+                    liveData3?.value,
+                    liveData4?.value
+                )
             )
         }
     }
     if (liveData3 != null) {
-        result.addSource(liveData3) {
-            result.value = block.invoke(
-                this.value,
-                liveData1?.value,
-                liveData2?.value,
-                liveData3.value,
-                liveData4?.value
+        result.addSource(liveData3) { d ->
+            result.setValue(
+                transform(
+                    this@combine.value,
+                    liveData1?.value,
+                    liveData2?.value,
+                    d,
+                    liveData4?.value
+                )
             )
         }
     }
     if (liveData4 != null) {
-        result.addSource(liveData4) {
-            result.value = block.invoke(
-                this.value,
-                liveData1?.value,
-                liveData2?.value,
-                liveData3?.value,
-                liveData4.value
+        result.addSource(liveData4) { e ->
+            result.setValue(
+                transform(
+                    this@combine.value,
+                    liveData1?.value,
+                    liveData2?.value,
+                    liveData3?.value,
+                    e
+                )
             )
         }
     }

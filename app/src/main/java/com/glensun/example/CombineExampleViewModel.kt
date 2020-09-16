@@ -3,50 +3,34 @@ package com.glensun.example
 import android.util.Log
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.glensun.livedataextension.combineWith
-import com.glensun.livedataextension.log
-import com.glensun.livedataextension.map
-import com.glensun.livedataextension.merge
+import com.glensun.livedataextension.*
 
 private const val TAG = "CombineExampleViewModel"
 
 class CombineExampleViewModel : ViewModel(), LifecycleObserver {
-    // repository
-    private val repository = CombineExampleRepository()
+    private val dataA = MutableLiveData<String>()
+    private val dataB = MutableLiveData<String>()
+    private val dataC = MutableLiveData<String>()
+    private val clickCount = MutableLiveData<Int>(0)
 
     // show data
-    val singerSong: LiveData<String> = repository.localSinger
-        .combineWith(
-            repository.localSong,
-            repository.remoteSinger,
-            repository.remoteSong
-        ) { localSinger, localSong, remoteSinger, remoteSong ->
-            if (remoteSinger != null && remoteSong != null) {
-                remoteSinger.singer + ": " + remoteSong.song
-            } else {
-                localSinger?.singer + ": " + localSong?.song
-            }
-        }.log { Log.d(TAG, "singerSong $it") }
+    val showData: LiveData<String> =
+        dataA.combine(dataB, dataC, clickCount) { a, b, c, count -> "$a,$b,$c,$count" }
 
-
-//    val mergeString: LiveData<String> =
-//        merge(
-//            repository.remoteSinger.map { it?.singer },
-//            repository.localSong.map { it?.song })
-//            .map {
-//                "${it?.joinToString()}"
-//            }
-
-    fun onFetchLocalClick() {
-        repository.fetchLocalData()
+    fun onGetGlenClick() {
+        dataA.value = "glen"
+        clickCount.value = (clickCount.value ?: 0) + 1
     }
 
-    fun onFetchRemoteSingerClick() {
-        repository.fetchRemoteSingerData()
+    fun onGetSunClick() {
+        dataB.value = "sun"
+        clickCount.value = (clickCount.value ?: 0) + 1
     }
 
-    fun onFetchRemoteSongClick() {
-        repository.fetchRemoteSongData()
+    fun onGetHelloClick() {
+        dataC.value = "hello"
+        clickCount.value = (clickCount.value ?: 0) + 1
     }
 }

@@ -6,25 +6,38 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
 ## API说明
 
-**Combine**
-
- - `combine`  多个不同类型的liveData合并，产生一个新的liveData
-```
-    val name = MutableLiveData<String>()
-    val age = MutableLiveData<Int>()
-    val title = name.combine(age) { name, age -> "$name, $age" }
-    name.value = "glensun"  // title 将会触发glensun, null
-    age.value = 18          // title 将会触发glen, 18
-```
+**Combining**
 
  - `merge`  多个相同类型的liveData合并，产生一个新的liveData
 ```
-    val nameA = MutableLiveData<String>()
-    val nameB = MutableLiveData<String>()
-    val lastName = merge(nameA, nameB)
-    nameA.value = "glen"    // lastName 将会触发glen
-    nameB.value = "sun"     // lastName 将会触发sun
-    nameA.value = "music"   // lastName 将会触发music
+    ---------[1]------------[5]----[4]------------->
+
+    --------------[7]------------------------------>
+
+                        merge
+
+    ---------[1]--[7]-------[5]----[4]------------->
+```
+
+ - `startWith`  在LiveData发射数据之前，插入数据
+```
+    ---------[1]------------[5]----[4]------------->
+
+                        startWith(7)
+
+    ---[7]---[1]------------[5]----[4]------------->
+```
+
+ - `combine`  多个不同类型的liveData合并，产生一个新的liveData
+```
+
+    ---------[1]------------------------[5]----[4]-------------------->
+
+    --------------------------[A]--------------------------[B]-------->
+
+                                  combine
+
+    -------[1,null]----------[1,A]-----[5,A]----[4,A]------[4,B]------>
 ```
 
 

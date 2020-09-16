@@ -1,7 +1,6 @@
 package com.glensun.example
 
 import androidx.lifecycle.LifecycleObserver
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.glensun.livedataextension.merge

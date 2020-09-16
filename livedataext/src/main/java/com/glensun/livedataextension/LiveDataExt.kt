@@ -360,6 +360,14 @@ inline fun <T> LiveData<T>.merge(liveData: LiveData<T>?): LiveData<T> {
     return result
 }
 
+/**
+ * Start With a default value
+ */
+@MainThread
+inline fun <T> LiveData<T>.startWith(default: T): LiveData<T> {
+    val defaultLiveData = MutableLiveData(default)
+    return defaultLiveData.merge(this)
+}
 
 // 过滤一些触发条件
 fun <X> LiveData<X>.filterMap(predicate: (X) -> Boolean): LiveData<X> =

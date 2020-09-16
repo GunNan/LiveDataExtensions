@@ -16,7 +16,7 @@ inline fun <X, Y> LiveData<X>.map(crossinline transform: (X?) -> Y): LiveData<Y>
 }
 
 /**
- * Combine with multi LiveData changed, merge the data by transform
+ * Combine with multi LiveData changed, map the data by transform
  */
 @MainThread
 inline fun <A, B, R> LiveData<A>.combine(
@@ -32,7 +32,7 @@ inline fun <A, B, R> LiveData<A>.combine(
 }
 
 /**
- * Combine with multi LiveData changed, merge the data by transform
+ * Combine with multi LiveData changed, map the data by transform
  */
 @MainThread
 inline fun <A, B, C, R> LiveData<A>.combine(
@@ -58,7 +58,7 @@ inline fun <A, B, C, R> LiveData<A>.combine(
 }
 
 /**
- * Combine with multi LiveData changed, merge the data by transform
+ * Combine with multi LiveData changed, map the data by transform
  */
 @MainThread
 inline fun <A, B, C, D, R> LiveData<A>.combine(
@@ -90,7 +90,7 @@ inline fun <A, B, C, D, R> LiveData<A>.combine(
 }
 
 /**
- * Combine with multi LiveData changed, merge the data by transform
+ * Combine with multi LiveData changed, map the data by transform
  */
 @MainThread
 inline fun <A, B, C, D, E, R> LiveData<A>.combine(
@@ -167,83 +167,173 @@ inline fun <A, B, C, D, E, R> LiveData<A>.combine(
     return result
 }
 
+/**
+ * Combine multi LiveDatas, map the data by transform
+ */
+@JvmName("combineAll")
+@MainThread
+inline fun <A, B, R> combine(
+    liveData1: LiveData<A>?,
+    liveData2: LiveData<B>?,
+    crossinline transform: (A?, B?) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    if (liveData1 != null) {
+        result.addSource(liveData1) { a -> result.setValue(transform(a, liveData2?.value)) }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { b -> result.setValue(transform(liveData1?.value, b)) }
+    }
+    return result
+}
 
-///**
-// * Combine multi LiveDatas, merge the data by transform
-// */
-//@JvmName("resetMediaListByMvList")
-//@MainThread
-//inline fun <A, B, R> combine(
-//    liveData1: LiveData<A>?,
-//    liveData2: LiveData<B>?,
-//    crossinline transform: (A?, B?) -> R
-//): LiveData<R> {
-//    val result = MediatorLiveData<R>()
-//    result.addSource(this) { a ->
-//        result.setValue(
-//            transform(
-//                a,
-//                liveData1?.value,
-//                liveData2?.value,
-//                liveData3?.value,
-//                liveData4?.value
-//            )
-//        )
-//    }
-//    if (liveData1 != null) {
-//        result.addSource(liveData1) { b ->
-//            result.setValue(
-//                transform(
-//                    this@combine.value,
-//                    b,
-//                    liveData2?.value,
-//                    liveData3?.value,
-//                    liveData4?.value
-//                )
-//            )
-//        }
-//    }
-//    if (liveData2 != null) {
-//        result.addSource(liveData2) { c ->
-//            result.setValue(
-//                transform(
-//                    this@combine.value,
-//                    liveData1?.value,
-//                    c,
-//                    liveData3?.value,
-//                    liveData4?.value
-//                )
-//            )
-//        }
-//    }
-//    if (liveData3 != null) {
-//        result.addSource(liveData3) { d ->
-//            result.setValue(
-//                transform(
-//                    this@combine.value,
-//                    liveData1?.value,
-//                    liveData2?.value,
-//                    d,
-//                    liveData4?.value
-//                )
-//            )
-//        }
-//    }
-//    if (liveData4 != null) {
-//        result.addSource(liveData4) { e ->
-//            result.setValue(
-//                transform(
-//                    this@combine.value,
-//                    liveData1?.value,
-//                    liveData2?.value,
-//                    liveData3?.value,
-//                    e
-//                )
-//            )
-//        }
-//    }
-//    return result
-//}
+/**
+ * Combine multi LiveDatas, map the data by transform
+ */
+@JvmName("combineAll")
+@MainThread
+inline fun <A, B, C, R> combine(
+    liveData1: LiveData<A>?,
+    liveData2: LiveData<B>?,
+    liveData3: LiveData<C>?,
+    crossinline transform: (A?, B?, C?) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    if (liveData1 != null) {
+        result.addSource(liveData1) { a ->
+            result.setValue(transform(a, liveData2?.value, liveData3?.value))
+        }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { b ->
+            result.setValue(transform(liveData1?.value, b, liveData3?.value))
+        }
+    }
+    if (liveData3 != null) {
+        result.addSource(liveData3) { c ->
+            result.setValue(transform(liveData1?.value, liveData2?.value, c))
+        }
+    }
+    return result
+}
+
+/**
+ * Combine multi LiveDatas, map the data by transform
+ */
+@JvmName("combineAll")
+@MainThread
+inline fun <A, B, C, D, R> combine(
+    liveData1: LiveData<A>?,
+    liveData2: LiveData<B>?,
+    liveData3: LiveData<C>?,
+    liveData4: LiveData<D>?,
+    crossinline transform: (A?, B?, C?, D?) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    if (liveData1 != null) {
+        result.addSource(liveData1) { a ->
+            result.setValue(transform(a, liveData2?.value, liveData3?.value, liveData4?.value))
+        }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { b ->
+            result.setValue(transform(liveData1?.value, b, liveData3?.value, liveData4?.value))
+        }
+    }
+    if (liveData3 != null) {
+        result.addSource(liveData3) { c ->
+            result.setValue(transform(liveData1?.value, liveData2?.value, c, liveData4?.value))
+        }
+    }
+    if (liveData4 != null) {
+        result.addSource(liveData4) { d ->
+            result.setValue(transform(liveData1?.value, liveData2?.value, liveData3?.value, d))
+        }
+    }
+    return result
+}
+
+/**
+ * Combine multi LiveDatas, map the data by transform
+ */
+@JvmName("combineAll")
+@MainThread
+inline fun <A, B, C, D, E, R> combine(
+    liveData1: LiveData<A>?,
+    liveData2: LiveData<B>?,
+    liveData3: LiveData<C>?,
+    liveData4: LiveData<D>?,
+    liveData5: LiveData<E>?,
+    crossinline transform: (A?, B?, C?, D?, E?) -> R
+): LiveData<R> {
+    val result = MediatorLiveData<R>()
+    if (liveData1 != null) {
+        result.addSource(liveData1) { a ->
+            result.setValue(
+                transform(
+                    a,
+                    liveData2?.value,
+                    liveData3?.value,
+                    liveData4?.value,
+                    liveData5?.value
+                )
+            )
+        }
+    }
+    if (liveData2 != null) {
+        result.addSource(liveData2) { b ->
+            result.setValue(
+                transform(
+                    liveData1?.value,
+                    b,
+                    liveData3?.value,
+                    liveData4?.value,
+                    liveData5?.value
+                )
+            )
+        }
+    }
+    if (liveData3 != null) {
+        result.addSource(liveData3) { c ->
+            result.setValue(
+                transform(
+                    liveData1?.value,
+                    liveData2?.value,
+                    c,
+                    liveData4?.value,
+                    liveData5?.value
+                )
+            )
+        }
+    }
+    if (liveData4 != null) {
+        result.addSource(liveData4) { d ->
+            result.setValue(
+                transform(
+                    liveData1?.value,
+                    liveData2?.value,
+                    liveData3?.value,
+                    d,
+                    liveData5?.value
+                )
+            )
+        }
+    }
+    if (liveData5 != null) {
+        result.addSource(liveData5) { e ->
+            result.setValue(
+                transform(
+                    liveData1?.value,
+                    liveData2?.value,
+                    liveData3?.value,
+                    liveData4?.value,
+                    e
+                )
+            )
+        }
+    }
+    return result
+}
 
 /**
  * Merge multi LiveData, which has same type

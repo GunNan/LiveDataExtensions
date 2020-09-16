@@ -873,6 +873,21 @@ inline fun <X> LiveData<X>.filterNull(): LiveData<X> {
 inline fun <X> LiveData<X>.distinctUntilChanged(): LiveData<X> =
     Transformations.distinctUntilChanged(this)
 
+inline fun <X> LiveData<X>.toMutable(): MutableLiveData<X> {
+    if (this is MutableLiveData) {
+        return this
+    } else {
+        val result = MediatorLiveData<X>()
+        result.addSource(this, object : Observer<X> {
+            override fun onChanged(x: X) {
+                result.postValue(x)
+            }
+        })
+        return result
+    }
+}
+
+
 // 延迟发射, 注意LiveData的特点，如果lifecycle的生命周期没走到START，那是不会发射的
 fun <X> LiveData<X>.delay(milliseconds: Long): LiveData<X> {
     val result = MediatorLiveData<X>()
@@ -915,22 +930,6 @@ fun <X> MutableLiveData<X>.delay(milliseconds: Long): MutableLiveData<Pair<Boole
 //            }, milliseconds)
 //    return this
 //}
-
-// 转变成mutableLiveData
-fun <X> LiveData<X>.toMutable(): MutableLiveData<X> {
-    if (this is MutableLiveData) {
-        return this
-    } else {
-        val result = MediatorLiveData<X>()
-        result.addSource(this, object : Observer<X> {
-            override fun onChanged(x: X) {
-                result.postValue(x)
-            }
-        })
-        return result
-    }
-}
-
 // 转变成mutableLiveData
 fun <X> LiveData<X>.toMutableAndEmit(): MutableLiveData<X> {
     if (this is MutableLiveData) {

@@ -47,7 +47,7 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
     -----------------[X]------------------------------[Y]------------->
 
-                                   combine
+                                 combineNonNull
 
     -------------------------[1,A,X]---[5,A,X]-------[5,A,Y]---[5,B,Y]->
 ```
@@ -73,6 +73,8 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
     ------------------[3]------------------------[7]-----------[6]---->
 ```
+
+ - `toMutable` 将LiveData转变为MutableLiveData
 
 **Filtering**
 

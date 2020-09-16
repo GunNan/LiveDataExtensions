@@ -8,28 +8,23 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
 **Combine**
 
- - `combine`  多个liveData合并产生一个新的liveData
+ - `combine`  多个不同类型的liveData合并，产生一个新的liveData
 ```
-    val firstName = MutableLiveData<String>()
-    val secondName = MutableLiveData<String>()
-    val fullName = firstName.combine(secondName){
-                        firstName,secondName-> "$firstName, $secondName"
-                   }
-    firstName.value = "glen"  // fullName 将会触发glen, null
-    secondName.value = "sun"  // fullName 将会触发glen, sun
+    val name = MutableLiveData<String>()
+    val age = MutableLiveData<Int>()
+    val title : LiveData<String> = name.combine(age) { name, age -> "$name, $age" }
+    name.value = "glensun"  // title 将会触发glensun, null
+    age.value = 18          // fullName 将会触发glen, 18
 ```
 
- - `merge`  多个liveData合并触发一个List
+ - `merge`  多个相同类型的liveData合并，产生一个新的liveData
 ```
-    val localData = MutableLiveData<String>()
-    val remoteData = MutableLiveData<String>()
-
-    val repository = merge(localData, remoteData).map {
-                        dataSources -> "${dataSources.joinToString()}"
-                    }
-    localData.value = "glen"    // repository 将会触发[glen, null]
-    remoteData.value = "sun"    // repository 将会触发[glen, sun]
-    remoteData.value = "music"  // repository 将会触发[glen, music]
+    val nameA = MutableLiveData<String>()
+    val nameB = MutableLiveData<String>()
+    val lastName = merge(nameA, nameB)
+    nameA.value = "glen"    // lastName 将会触发glen
+    nameB.value = "sun"     // lastName 将会触发sun
+    nameA.value = "music"   // lastName 将会触发music
 ```
 
 

@@ -12,6 +12,13 @@
         android:label="combine_example_fragment"
         tools:layout="@layout/combine_example_fragment" />
 
+
+    <fragment
+        android:id="@+id/mergeExampleFragment"
+        android:name="com.glensun.example.MergeExampleFragment"
+        android:label="merge_example_fragment"
+        tools:layout="@layout/merge_example_fragment" />
+
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.glensun.example.MainFragment"
@@ -20,5 +27,8 @@
         <action
             android:id="@+id/action_mainFragment_to_combineExampleFragment"
             app:destination="@id/combineExampleFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_mergeExampleFragment"
+            app:destination="@id/mergeExampleFragment" />
     </fragment>
 </navigation>

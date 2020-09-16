@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">LiveDataExtension</string>
     <string name="combine">combine</string>
+    <string name="merge">merge</string>
     <string name="get_glen">glen</string>
     <string name="get_sun">sun</string>
     <string name="get_hello">hello</string>

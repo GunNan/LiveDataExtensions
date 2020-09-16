@@ -167,6 +167,96 @@ inline fun <A, B, C, D, E, R> LiveData<A>.combine(
     return result
 }
 
+
+///**
+// * Combine multi LiveDatas, merge the data by transform
+// */
+//@JvmName("resetMediaListByMvList")
+//@MainThread
+//inline fun <A, B, R> combine(
+//    liveData1: LiveData<A>?,
+//    liveData2: LiveData<B>?,
+//    crossinline transform: (A?, B?) -> R
+//): LiveData<R> {
+//    val result = MediatorLiveData<R>()
+//    result.addSource(this) { a ->
+//        result.setValue(
+//            transform(
+//                a,
+//                liveData1?.value,
+//                liveData2?.value,
+//                liveData3?.value,
+//                liveData4?.value
+//            )
+//        )
+//    }
+//    if (liveData1 != null) {
+//        result.addSource(liveData1) { b ->
+//            result.setValue(
+//                transform(
+//                    this@combine.value,
+//                    b,
+//                    liveData2?.value,
+//                    liveData3?.value,
+//                    liveData4?.value
+//                )
+//            )
+//        }
+//    }
+//    if (liveData2 != null) {
+//        result.addSource(liveData2) { c ->
+//            result.setValue(
+//                transform(
+//                    this@combine.value,
+//                    liveData1?.value,
+//                    c,
+//                    liveData3?.value,
+//                    liveData4?.value
+//                )
+//            )
+//        }
+//    }
+//    if (liveData3 != null) {
+//        result.addSource(liveData3) { d ->
+//            result.setValue(
+//                transform(
+//                    this@combine.value,
+//                    liveData1?.value,
+//                    liveData2?.value,
+//                    d,
+//                    liveData4?.value
+//                )
+//            )
+//        }
+//    }
+//    if (liveData4 != null) {
+//        result.addSource(liveData4) { e ->
+//            result.setValue(
+//                transform(
+//                    this@combine.value,
+//                    liveData1?.value,
+//                    liveData2?.value,
+//                    liveData3?.value,
+//                    e
+//                )
+//            )
+//        }
+//    }
+//    return result
+//}
+
+/**
+ * Merge multi LiveData, which has same type
+ */
+inline fun <T> merge(vararg liveDatas: LiveData<T>): LiveData<T> {
+    val result = MediatorLiveData<T>()
+    liveDatas.forEach { liveData ->
+        result.addSource(liveData) { result.setValue(it) }
+    }
+    return result
+}
+
+
 // 过滤一些触发条件
 fun <X> LiveData<X>.filterMap(predicate: (X) -> Boolean): LiveData<X> =
     Transformations.switchMap(this) {
@@ -286,44 +376,44 @@ fun LiveData<Boolean>.isTrue(): Boolean {
 //inline fun <X> LiveData<X>.distinctUntilChanged(): LiveData<X> =
 //    Transformations.distinctUntilChanged(this)
 
-
-fun <T> merge(vararg liveDatas: LiveData<T>): LiveData<List<T?>> {
-    return merge(liveDatas.toList())
-}
-
-fun <T> merge(liveDatas: List<LiveData<T>>): LiveData<List<T?>> {
-    val result = MediatorLiveData<List<T?>>()
-
-    liveDatas.forEachIndexed { index, liveData ->
-        result.addSource(liveData) {
-            var resultList = result.value?.toMutableList()
-            if (resultList == null) {
-                resultList = MutableList(liveDatas.size) { null }
-            }
-            resultList[index] = it
-
-            result.postValue(resultList)
-        }
-    }
-    return result
-}
-
-fun <T> LiveData<List<T?>>.merge(liveData: LiveData<T>): LiveData<List<T?>> {
-    val result = MediatorLiveData<List<T?>>()
-    result.addSource(this, object : Observer<List<T?>> {
-        override fun onChanged(it: List<T?>?) {
-            it?.toMutableList()?.add(liveData.value)
-            result.postValue(it)
-        }
-    }
-    )
-    result.addSource(liveData, object : Observer<T> {
-        override fun onChanged(it: T) {
-            val list = this@merge.value
-            list?.toMutableList()?.add(it)
-            result.postValue(list)
-        }
-
-    })
-    return result
-}
+//
+//fun <T> merge(vararg liveDatas: LiveData<T>): LiveData<List<T?>> {
+//    return merge(liveDatas.toList())
+//}
+//
+//fun <T> merge(liveDatas: List<LiveData<T>>): LiveData<List<T?>> {
+//    val result = MediatorLiveData<List<T?>>()
+//
+//    liveDatas.forEachIndexed { index, liveData ->
+//        result.addSource(liveData) {
+//            var resultList = result.value?.toMutableList()
+//            if (resultList == null) {
+//                resultList = MutableList(liveDatas.size) { null }
+//            }
+//            resultList[index] = it
+//
+//            result.postValue(resultList)
+//        }
+//    }
+//    return result
+//}
+//
+//fun <T> LiveData<List<T?>>.merge(liveData: LiveData<T>): LiveData<List<T?>> {
+//    val result = MediatorLiveData<List<T?>>()
+//    result.addSource(this, object : Observer<List<T?>> {
+//        override fun onChanged(it: List<T?>?) {
+//            it?.toMutableList()?.add(liveData.value)
+//            result.postValue(it)
+//        }
+//    }
+//    )
+//    result.addSource(liveData, object : Observer<T> {
+//        override fun onChanged(it: T) {
+//            val list = this@merge.value
+//            list?.toMutableList()?.add(it)
+//            result.postValue(list)
+//        }
+//
+//    })
+//    return result
+//}

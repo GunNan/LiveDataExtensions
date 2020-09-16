@@ -19,6 +19,9 @@ class MainFragment : Fragment() {
         root.findViewById<Button>(R.id.combine_btn).setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_combineExampleFragment)
         }
+        root.findViewById<Button>(R.id.merge_btn).setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_mergeExampleFragment)
+        }
         return root
     }
 }

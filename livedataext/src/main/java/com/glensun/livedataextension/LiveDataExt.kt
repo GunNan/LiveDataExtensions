@@ -367,6 +367,27 @@ inline fun <T> LiveData<T>.merge(liveData: LiveData<T>?): LiveData<T> {
 }
 
 /**
+ * Zip with other LiveData, generate a LiveData<List>
+ */
+@MainThread
+inline fun <T> LiveData<T>.zip(liveData: LiveData<T>?): LiveData<List<T>> {
+    return this.combineNonNull(liveData) { thisValue, liveDataValue ->
+        listOf(thisValue, liveDataValue)
+    }
+}
+
+/**
+ * Zip with other LiveData, generate a LiveData<List>
+ */
+@JvmName("zipList")
+@MainThread
+inline fun <T> LiveData<List<T>>.zip(liveData: LiveData<T>?): LiveData<List<T>> {
+    return this.combineNonNull(liveData) { thisValue, liveDataValue ->
+        thisValue + liveDataValue
+    }
+}
+
+/**
  * Combine with multi LiveData changed, map the data by transform
  */
 @MainThread
@@ -889,6 +910,24 @@ inline fun <X> LiveData<X>.log(crossinline printer: (X?) -> Unit): LiveData<X> {
     result.addSource(this) { x ->
         printer(x)
         result.setValue(x)
+    }
+    return result
+}
+
+@MainThread
+inline fun LiveData<List<Boolean?>>.isAllTrue(): LiveData<Boolean> {
+    val result = MediatorLiveData<Boolean>()
+    result.addSource(this) { list ->
+        if (list != null) {
+            val itemFalse = list.find { item -> item == false }
+            if (itemFalse != null) {
+                result.setValue(false)
+            } else {
+                result.setValue(true)
+            }
+        } else {
+            result.setValue(false)
+        }
     }
     return result
 }

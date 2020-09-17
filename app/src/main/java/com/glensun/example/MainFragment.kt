@@ -22,6 +22,9 @@ class MainFragment : Fragment() {
         root.findViewById<Button>(R.id.merge_btn).setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_mergeExampleFragment)
         }
+        root.findViewById<Button>(R.id.zip_btn).setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_zipExampleFragment)
+        }
         return root
     }
 }

@@ -2,7 +2,12 @@
     <string name="app_name">LiveDataExtension</string>
     <string name="combine">combine</string>
     <string name="merge">merge</string>
+    <string name="zip">zip</string>
     <string name="get_glen">glen</string>
     <string name="get_sun">sun</string>
     <string name="get_hello">hello</string>
+    <string name="toggle_1">toggle_1</string>
+    <string name="toggle_2">toggle_2</string>
+    <string name="toggle_3">toggle_3</string>
+    <string name="toggle_4">toggle_4</string>
 </resources>

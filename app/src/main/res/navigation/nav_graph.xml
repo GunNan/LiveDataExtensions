@@ -20,6 +20,13 @@
         tools:layout="@layout/merge_example_fragment" />
 
     <fragment
+        android:id="@+id/zipExampleFragment"
+        android:name="com.glensun.example.ZipExampleFragment"
+        android:label="zip_example_fragment"
+        tools:layout="@layout/zip_example_fragment" />
+
+
+    <fragment
         android:id="@+id/mainFragment"
         android:name="com.glensun.example.MainFragment"
         android:label="main_fragment"
@@ -30,5 +37,8 @@
         <action
             android:id="@+id/action_mainFragment_to_mergeExampleFragment"
             app:destination="@id/mergeExampleFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_zipExampleFragment"
+            app:destination="@id/zipExampleFragment" />
     </fragment>
 </navigation>

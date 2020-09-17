@@ -88,6 +88,9 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
  - `toMutable` 将LiveData转变为MutableLiveData
  - `isAllTrue` LiveData<List<Boolean>全为true
  - `log` 打log,不会影响触发值
+ - `doBefore` 在LiveData触发之前触发
+ - `doAfter` 在LiveData触发之后触发
+ - `defaultIfNull` 当值为null的默认值
 
 **Filtering**
 
@@ -101,7 +104,7 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
     ------------------------------------[5]-----------[4]------------->
 ```
 
- - `filterNull` 
+ - `filterNonNull` 
 
 ```
     ---------[1]------------[null]-------------------------[4]-------->

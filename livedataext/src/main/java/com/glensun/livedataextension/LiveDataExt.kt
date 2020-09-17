@@ -894,10 +894,10 @@ inline fun <X> LiveData<X>.filter(crossinline predicate: (X?) -> Boolean): LiveD
 }
 
 /**
- * Filter null value on LiveData changed
+ * Filter non null value on LiveData changed
  */
 @MainThread
-inline fun <X> LiveData<X>.filterNull(): LiveData<X> {
+inline fun <X> LiveData<X>.filterNonNull(): LiveData<X> {
     val result = MediatorLiveData<X>()
     result.addSource(this) {
         if (it != null) {
@@ -963,6 +963,40 @@ inline fun LiveData<List<Boolean?>>.isAllTrue(): LiveData<Boolean> {
     }
     return result
 }
+
+@MainThread
+inline fun <T> LiveData<T>.doBefore(crossinline block: () -> Unit): LiveData<T> {
+    val result = MediatorLiveData<T>()
+    result.addSource(this) {
+        block()
+        result.setValue(it)
+    }
+    return result
+}
+
+@MainThread
+inline fun <T> LiveData<T>.doAfter(crossinline block: () -> Unit): LiveData<T> {
+    val result = MediatorLiveData<T>()
+    result.addSource(this) {
+        result.setValue(it)
+        block()
+    }
+    return result
+}
+
+@MainThread
+inline fun <T> LiveData<T>.defaultIfNull(value: T): LiveData<T> {
+    val result = MediatorLiveData<T>()
+    result.addSource(this) {
+        if (it == null) {
+            result.setValue(value)
+        } else {
+            result.setValue(it)
+        }
+    }
+    return result
+}
+
 
 inline fun <T> List<T?>.isItemContainsNull(): Boolean {
     var isItemNull = false

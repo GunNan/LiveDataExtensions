@@ -1,0 +1,14 @@
+ext.versionNumbers = [
+        gradle      : '4.0.1',
+
+        kotlin      : '1.3.72',
+        coreKtx     : '1.3.1',
+        appCompat   : '1.2.0',
+
+        minSdk      : 14,
+        targetSdk   : 29,
+        buildTool   : '29.0.3',
+
+        versionCode : 1,
+        versionName : '1.0.0-alpha',
+]

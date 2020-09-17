@@ -4,22 +4,6 @@ import androidx.annotation.MainThread
 import androidx.lifecycle.*
 
 /**
- * React on LiveData changed, map the data by transform
- */
-@MainThread
-inline fun <X, Y> LiveData<X>.map(crossinline transform: (X?) -> Y): LiveData<Y> =
-    Transformations.map(this) { transform(it) }
-
-/**
- * React on LiveData changed, return a liveData by transform, which can trigger result change
- */
-@MainThread
-inline fun <X, Y> LiveData<X>.switchMap(
-    crossinline transform: (X?) -> LiveData<Y>
-): LiveData<Y> = Transformations.switchMap(this) { transform(it) }
-
-
-/**
  * Combine with multi LiveData changed, map the data by transform
  */
 @MainThread
@@ -383,6 +367,25 @@ inline fun <T> LiveData<List<T>>.zip(liveData: LiveData<T>?): LiveData<List<T>> 
     return this.combineNonNull(liveData) { thisValue, liveDataValue ->
         thisValue + liveDataValue
     }
+}
+
+/**
+ * Zip multi LiveData, which has same type, generate a LiveData<List>
+ */
+@JvmName("zipAll")
+@MainThread
+inline fun <T> zip(vararg liveDatas: LiveData<T>): LiveData<List<T>> {
+    val resultList = MutableList<T?>(liveDatas.size) { null }
+    val result = MediatorLiveData<List<T>>()
+    liveDatas.forEachIndexed { index, liveData ->
+        result.addSource(liveData) { it ->
+            resultList[index] = it
+            if (resultList.isItemNonNull()) {
+                result.setValue(resultList.map { it!! })
+            }
+        }
+    }
+    return result
 }
 
 /**
@@ -861,6 +864,22 @@ inline fun <T> LiveData<T>.startWith(default: T): LiveData<T> {
 }
 
 /**
+ * React on LiveData changed, map the data by transform
+ */
+@MainThread
+inline fun <X, Y> LiveData<X>.map(crossinline transform: (X?) -> Y): LiveData<Y> =
+    Transformations.map(this) { transform(it) }
+
+/**
+ * React on LiveData changed, return a liveData by transform, which can trigger result change
+ */
+@MainThread
+inline fun <X, Y> LiveData<X>.switchMap(
+    crossinline transform: (X?) -> LiveData<Y>
+): LiveData<Y> = Transformations.switchMap(this) { transform(it) }
+
+
+/**
  * Filter some value on LiveData changed
  */
 @MainThread
@@ -944,6 +963,19 @@ inline fun LiveData<List<Boolean?>>.isAllTrue(): LiveData<Boolean> {
     }
     return result
 }
+
+inline fun <T> List<T?>.isItemContainsNull(): Boolean {
+    var isItemNull = false
+    this.forEach {
+        if (it == null) {
+            isItemNull = true
+            return@forEach
+        }
+    }
+    return isItemNull
+}
+
+inline fun <T> List<T?>.isItemNonNull(): Boolean = !this.isItemContainsNull()
 
 
 //

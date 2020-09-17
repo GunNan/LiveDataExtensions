@@ -8,7 +8,7 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
 **Combining**
 
- - `merge`  多个相同类型的liveData合并，产生一个新的liveData
+ - `merge`, `LiveData.merge`  多个相同类型的liveData合并，产生一个新的liveData
 ```
     ---------[1]------------------------[5]-----------[4]------------->
 
@@ -28,7 +28,7 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
     ---[7]---[1]------------------------[5]-----------[4]------------->
 ```
 
- - `combine`  多个不同类型的liveData合并，产生一个新的liveData
+ - `combine`, `LiveData.combine`  多个不同类型的liveData合并，产生一个新的liveData
 ```
     -----------------[1]----------------[5]----[4]-------------------->
 
@@ -39,7 +39,7 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
     -----[null,A]---[1,A]----[1,B]-----[5,B]---[4,B]------[4,C]------->
 ```
 
- - `combineNonNull`  多个不同类型的liveData合并，产生一个新的liveData，所有被观察的对象都要有数据才会触发
+ - `combineNonNull`, `LiveData.combineNonNull`  多个不同类型的liveData合并，产生一个新的liveData，所有被观察的对象都要有数据才会触发
 ```
     ---------[1]------------------------[5]--------------------------->
 
@@ -52,7 +52,7 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
     -------------------------[1,A,X]---[5,A,X]-------[5,A,Y]---[5,B,Y]->
 ```
 
- - `zip`  多个相同类型的liveData合并，产生一个新的liveData<List>
+ - `zip`, `LiveData.zip`, `LiveData<List>.zip`  多个相同类型的liveData合并，产生一个新的liveData<List>
 ```
     ---------[1]------------------------[5]----[4]-------------------->
 
@@ -86,6 +86,8 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 ```
 
  - `toMutable` 将LiveData转变为MutableLiveData
+ - `isAllTrue` LiveData<List<Boolean>全为true
+ - `log` 打log,不会影响触发值
 
 **Filtering**
 

@@ -1,7 +1,5 @@
 package com.glensun.livedataextension
 
-import android.os.Handler
-import android.os.Looper
 import androidx.annotation.MainThread
 import androidx.lifecycle.*
 
@@ -894,6 +892,21 @@ inline fun <X> LiveData<X>.filterNull(): LiveData<X> {
 inline fun <X> LiveData<X>.distinctUntilChanged(): LiveData<X> =
     Transformations.distinctUntilChanged(this)
 
+@MainThread
+inline fun <X> LiveData<X>.distinct(): LiveData<X> {
+    val result = MediatorLiveData<X>()
+    result.addSource(this, object : Observer<X> {
+        val alreadyTriggerSet = mutableSetOf<X>()
+        override fun onChanged(t: X) {
+            if (t != null && !alreadyTriggerSet.contains(t)) {
+                result.setValue(t)
+                alreadyTriggerSet.add(t)
+            }
+        }
+    })
+    return result
+}
+
 inline fun <X> LiveData<X>.toMutable(): MutableLiveData<X> {
     if (this is MutableLiveData) {
         return this
@@ -931,6 +944,7 @@ inline fun LiveData<List<Boolean?>>.isAllTrue(): LiveData<Boolean> {
     }
     return result
 }
+
 
 //
 //// 延迟发射, 注意LiveData的特点，如果lifecycle的生命周期没走到START，那是不会发射的

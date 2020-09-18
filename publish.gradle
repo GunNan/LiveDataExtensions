@@ -11,6 +11,7 @@ publishing.publications {
     }
 }
 
+
 artifactory {
     contextUrl = artifactoryUrl
     publish {

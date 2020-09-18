@@ -3,11 +3,15 @@ buildscript {
     repositories {
         google()
         jcenter()
+        maven {
+            url "https://plugins.gradle.org/m2/"
+        }
     }
     apply from: rootProject.file('versions.gradle')
     dependencies {
         classpath "com.android.tools.build:gradle:$versionNumbers.gradle"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$versionNumbers.kotlin"
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:4.17.2"
     }
 }
 
@@ -22,4 +26,36 @@ subprojects { project -> apply from: rootProject.file('versions.gradle') }
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+apply plugin: "com.jfrog.artifactory"
+apply plugin: 'maven-publish'
+def artifactoryUrl = "https://dl.bintray.com/glensun-personal/glensun"
+apply from: rootProject.file('versions.gradle')
+
+publishing.publications {
+    aar(MavenPublication) {
+        groupId "com.glensun.livedataext"
+        version = versionNumbers.versionName
+        artifactId = 'livedataext'
+        artifact("livedataext/build/outputs/aar/livedataext-release.aar")
+    }
+}
+
+artifactory {
+    contextUrl = artifactoryUrl
+    publish {
+        repository {
+            Properties properties = new Properties()
+            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+            repoKey = 'livedataext/'
+            username = properties.getProperty('bintray.user')
+            password = properties.getProperty('bintray.apiKey')
+        }
+
+        defaults {
+            publishArtifacts = true
+            publications('aar')
+        }
+    }
 }

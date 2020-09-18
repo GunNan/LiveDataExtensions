@@ -965,21 +965,21 @@ inline fun LiveData<List<Boolean?>>.isAllTrue(): LiveData<Boolean> {
 }
 
 @MainThread
-inline fun <T> LiveData<T>.doBefore(crossinline block: () -> Unit): LiveData<T> {
+inline fun <T> LiveData<T>.doBefore(crossinline block: (t: T?) -> Unit): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(this) {
-        block()
+        block(it)
         result.setValue(it)
     }
     return result
 }
 
 @MainThread
-inline fun <T> LiveData<T>.doAfter(crossinline block: () -> Unit): LiveData<T> {
+inline fun <T> LiveData<T>.doAfter(crossinline block: (t: T?) -> Unit): LiveData<T> {
     val result = MediatorLiveData<T>()
     result.addSource(this) {
         result.setValue(it)
-        block()
+        block(it)
     }
     return result
 }

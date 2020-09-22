@@ -10,9 +10,9 @@ import com.glensun.livedataextension.*
 private const val TAG = "ZipExampleViewModel"
 
 class ZipExampleViewModel : ViewModel(), LifecycleObserver {
-    private val dataA = MutableLiveData<Boolean>()
-    private val dataB = MutableLiveData<Boolean>()
-    private val dataC = MutableLiveData<Boolean>()
+    private val dataA = MutableLiveData<Boolean>(false)
+    private val dataB = MutableLiveData<Boolean>(false)
+    private val dataC = MutableLiveData<Boolean>(false)
 
     // show data
     private val zipData = dataA.zip(dataB).zip(dataC)

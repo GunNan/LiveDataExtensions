@@ -44,8 +44,11 @@ dependencies {
     implementation "androidx.core:core-ktx:$versionNumbers.coreKtx"
     implementation "androidx.appcompat:appcompat:$versionNumbers.appCompat"
 
+    // livedata ext
+    implementation "com.glensun:livedataext:0.6.0-alpha"
+
     // modules
-    implementation project(':livedataext')
+//    implementation project(':livedataext')
 
     // constraintLayout
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'

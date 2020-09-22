@@ -4,6 +4,23 @@ LiveDataExtensions - Android LiveData Extensions for Kotlin, use like RxJava ope
 
 LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
+## Use
+
+**添加依赖Dependencies**
+
+- AndroidX
+```
+    implementation "com.glensun:livedataext:0.6.0-alpha"
+```
+
+**添加Import**
+
+```
+    import com.glensun.livedataextension.*
+```
+
+
+
 ## API说明
 
 **Combining**

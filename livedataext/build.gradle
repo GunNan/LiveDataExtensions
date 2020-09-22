@@ -33,4 +33,4 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-livedata:2.2.0'
 }
 
-apply from: 'java-bintray.gradle'
+apply from: 'publish.gradle'

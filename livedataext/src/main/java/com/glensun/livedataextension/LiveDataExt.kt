@@ -946,6 +946,8 @@ inline fun <X> LiveData<X>.log(crossinline printer: (X?) -> Unit): LiveData<X> {
     return result
 }
 
+
+@JvmName("isAllTrueNullable")
 @MainThread
 inline fun LiveData<List<Boolean?>>.isAllTrue(): LiveData<Boolean> {
     val result = MediatorLiveData<Boolean>()
@@ -964,6 +966,23 @@ inline fun LiveData<List<Boolean?>>.isAllTrue(): LiveData<Boolean> {
     return result
 }
 
+@MainThread
+inline fun LiveData<List<Boolean>>.isAllTrue(): LiveData<Boolean> {
+    val result = MediatorLiveData<Boolean>()
+    result.addSource(this) { list ->
+        if (list != null) {
+            val itemFalse = list.find { item -> item == false }
+            if (itemFalse != null) {
+                result.setValue(false)
+            } else {
+                result.setValue(true)
+            }
+        } else {
+            result.setValue(false)
+        }
+    }
+    return result
+}
 @MainThread
 inline fun <T> LiveData<T>.doBefore(crossinline block: (t: T?) -> Unit): LiveData<T> {
     val result = MediatorLiveData<T>()

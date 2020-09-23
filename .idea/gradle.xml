@@ -12,6 +12,7 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/example" />
+            <option value="$PROJECT_DIR$/example-nonx" />
             <option value="$PROJECT_DIR$/livedataext" />
           </set>
         </option>

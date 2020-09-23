@@ -1,3 +1,4 @@
+include ':livedataext-nonx'
 include ':example-nonx'
 include ':livedataext'
 include ':example'

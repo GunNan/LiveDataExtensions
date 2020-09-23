@@ -14,6 +14,7 @@
             <option value="$PROJECT_DIR$/example" />
             <option value="$PROJECT_DIR$/example-nonx" />
             <option value="$PROJECT_DIR$/livedataext" />
+            <option value="$PROJECT_DIR$/livedataext-nonx" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

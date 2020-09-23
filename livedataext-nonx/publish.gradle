@@ -3,9 +3,9 @@ apply plugin: 'maven-publish'
 
 //region Publish to jCenter
 def libGroupId = 'com.glensun'
-def libArtifactId = 'livedataext'
+def libArtifactId = 'livedataext-nonx'
 def libVersion = versionNumbers.versionName
-def libDesc = 'LiveData Extensions for Android X (Kotlin).'
+def libDesc = 'LiveData Extensions for Android Support (Kotlin).'
 def libLicenses = ['Apache-2.0']
 def libVCSUrl = 'https://github.com/GunNan/LiveDataExtensions.git'
 

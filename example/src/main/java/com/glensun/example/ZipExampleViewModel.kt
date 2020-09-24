@@ -1,6 +1,7 @@
 package com.glensun.example
 
 import androidx.lifecycle.LifecycleObserver
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.glensun.livedataextension.map
@@ -15,7 +16,7 @@ class ZipExampleViewModel : ViewModel(), LifecycleObserver {
     private val dataC = MutableLiveData<Boolean>(false)
 
     // show data
-    private val zipData = dataA.zip(dataB).zip(dataC)
+    private val zipData: LiveData<List<Boolean>> = dataA.zip(dataB).zip(dataC)
     val showData = zipData.map { it?.joinToString() }
     val isAllTrue = zipData.isAllTrue().map { "isAllTrue: $it" }
 

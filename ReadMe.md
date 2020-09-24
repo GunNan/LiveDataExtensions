@@ -6,11 +6,27 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
 ## Use
 
+**添加jcenter**
+
+```
+    buildscript {
+       repositories {
+            ...
+            jcenter()
+        }
+    }
+```
+
 **添加依赖Dependencies**
 
 - AndroidX
 ```
-    implementation "com.glensun:livedataext:0.6.0-alpha"
+    implementation "com.glensun:livedataext:1.0.0-beta"
+```
+
+- Android Support
+```
+    implementation "com.glensun:livedataext-nonx:1.0.0-beta"
 ```
 
 **添加Import**

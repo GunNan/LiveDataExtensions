@@ -3,6 +3,7 @@
     <string name="combine">combine</string>
     <string name="merge">merge</string>
     <string name="zip">zip</string>
+    <string name="crash">crash</string>
     <string name="get_glen">glen</string>
     <string name="get_sun">sun</string>
     <string name="get_hello">hello</string>
@@ -10,4 +11,6 @@
     <string name="toggle_2">toggle_2</string>
     <string name="toggle_3">toggle_3</string>
     <string name="toggle_4">toggle_4</string>
+    <string name="crash_happened">crash !!!</string>
+    <string name="crash_catch">catch Crash</string>
 </resources>

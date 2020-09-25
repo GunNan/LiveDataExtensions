@@ -25,6 +25,12 @@
         android:label="zip_example_fragment"
         tools:layout="@layout/zip_example_fragment" />
 
+    <fragment
+        android:id="@+id/crashExampleFragment"
+        android:name="com.glensun.example.CrashExampleFragment"
+        android:label="crash_example_fragment"
+        tools:layout="@layout/crash_example_fragment" />
+
 
     <fragment
         android:id="@+id/mainFragment"
@@ -40,5 +46,8 @@
         <action
             android:id="@+id/action_mainFragment_to_zipExampleFragment"
             app:destination="@id/zipExampleFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_crashExampleFragment"
+            app:destination="@id/crashExampleFragment" />
     </fragment>
 </navigation>

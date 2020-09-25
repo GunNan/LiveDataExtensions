@@ -25,6 +25,9 @@ class MainFragment : Fragment() {
         root.findViewById<Button>(R.id.zip_btn).setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_zipExampleFragment)
         }
+        root.findViewById<Button>(R.id.crash_btn).setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_crashExampleFragment)
+        }
         return root
     }
 }

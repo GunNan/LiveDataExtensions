@@ -13,5 +13,5 @@ ext.versionNumbers = [
         buildTool   : '29.0.3',
 
         versionCode : 1,
-        versionName : '1.0.0-beta',
+        versionName : '1.0.0',
 ]

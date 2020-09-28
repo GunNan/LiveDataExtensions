@@ -21,12 +21,12 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
 - AndroidX
 ```
-    implementation "com.glensun:livedataext:1.0.0-beta"
+    implementation "com.glensun:livedataext:1.0.0"
 ```
 
 - Android Support
 ```
-    implementation "com.glensun:livedataext-nonx:1.0.0-beta"
+    implementation "com.glensun:livedataext-nonx:1.0.0"
 ```
 
 **添加Import**

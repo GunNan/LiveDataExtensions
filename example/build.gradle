@@ -45,7 +45,7 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$versionNumbers.appCompat"
 
     // livedata ext
-    implementation "com.glensun:livedataext:1.0.0-beta"
+    implementation "com.glensun:livedataext:1.0.0"
 
     // modules
 //    implementation project(':livedataext')

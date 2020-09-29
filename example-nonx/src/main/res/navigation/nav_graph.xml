@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/mainFragment">
+
+
+    <fragment
+        android:id="@+id/combineExampleFragment"
+        android:name="com.glensun.examplenonx.CombineExampleFragment"
+        android:label="combine_example_fragment"
+        tools:layout="@layout/combine_example_fragment" />
+
+
+    <fragment
+        android:id="@+id/mergeExampleFragment"
+        android:name="com.glensun.examplenonx.MergeExampleFragment"
+        android:label="merge_example_fragment"
+        tools:layout="@layout/merge_example_fragment" />
+
+    <fragment
+        android:id="@+id/zipExampleFragment"
+        android:name="com.glensun.examplenonx.ZipExampleFragment"
+        android:label="zip_example_fragment"
+        tools:layout="@layout/zip_example_fragment" />
+
+    <fragment
+        android:id="@+id/crashExampleFragment"
+        android:name="com.glensun.examplenonx.CrashExampleFragment"
+        android:label="crash_example_fragment"
+        tools:layout="@layout/crash_example_fragment" />
+
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.glensun.examplenonx.MainFragment"
+        android:label="main_fragment"
+        tools:layout="@layout/main_fragment">
+        <action
+            android:id="@+id/action_mainFragment_to_combineExampleFragment"
+            app:destination="@id/combineExampleFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_mergeExampleFragment"
+            app:destination="@id/mergeExampleFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_zipExampleFragment"
+            app:destination="@id/zipExampleFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_crashExampleFragment"
+            app:destination="@id/crashExampleFragment" />
+    </fragment>
+</navigation>

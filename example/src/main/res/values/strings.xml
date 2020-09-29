@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LiveDataExtension</string>
+    <string name="app_name">LiveDataExtension-Example</string>
     <string name="combine">combine</string>
     <string name="merge">merge</string>
     <string name="zip">zip</string>

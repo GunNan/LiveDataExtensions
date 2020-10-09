@@ -48,7 +48,7 @@ dependencies {
 //    implementation project(':livedataext-nonx')
 
     // constraintLayout
-    implementation 'com.android.support.constraint:constraint-layout:2.0.1'
+    implementation 'com.android.support.constraint:constraint-layout:2.0.2'
 
     // lifecycle livedata, viewmodel
     implementation 'android.arch.lifecycle:extensions:1.1.1'

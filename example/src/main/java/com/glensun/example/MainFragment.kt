@@ -28,6 +28,9 @@ class MainFragment : Fragment() {
         root.findViewById<Button>(R.id.crash_btn).setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_crashExampleFragment)
         }
+        root.findViewById<Button>(R.id.switch_map_btn).setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_switchmapExampleFragment)
+        }
         return root
     }
 }

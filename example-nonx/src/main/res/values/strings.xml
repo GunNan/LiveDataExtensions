@@ -4,6 +4,7 @@
     <string name="merge">merge</string>
     <string name="zip">zip</string>
     <string name="crash">crash</string>
+    <string name="switchmap">switchmap</string>
     <string name="get_glen">glen</string>
     <string name="get_sun">sun</string>
     <string name="get_hello">hello</string>
@@ -13,4 +14,5 @@
     <string name="toggle_4">toggle_4</string>
     <string name="crash_happened">crash !!!</string>
     <string name="crash_catch">catch Crash</string>
+    <string name="fetch_remote">fetch remote</string>
 </resources>

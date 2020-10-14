@@ -31,6 +31,12 @@
         android:label="crash_example_fragment"
         tools:layout="@layout/crash_example_fragment" />
 
+    <fragment
+        android:id="@+id/switchMapExampleFragment"
+        android:name="com.glensun.examplenonx.SwitchMapExampleFragment"
+        android:label="switchmap_example_fragment"
+        tools:layout="@layout/switchmap_example_fragment" />
+
 
     <fragment
         android:id="@+id/mainFragment"
@@ -49,5 +55,8 @@
         <action
             android:id="@+id/action_mainFragment_to_crashExampleFragment"
             app:destination="@id/crashExampleFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_switchmapExampleFragment"
+            app:destination="@id/switchMapExampleFragment" />
     </fragment>
 </navigation>

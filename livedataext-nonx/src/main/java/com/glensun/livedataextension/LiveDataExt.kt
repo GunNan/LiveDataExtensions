@@ -953,6 +953,10 @@ inline fun <X> LiveData<X>.toMutable(): MutableLiveData<X> {
     }
 }
 
+inline fun <X> MutableLiveData<X>.trigger() {
+    this.postValue(this.value)
+}
+
 @MainThread
 inline fun <X> LiveData<X>.log(crossinline printer: (X?) -> Unit): LiveData<X> {
     val result = MediatorLiveData<X>()

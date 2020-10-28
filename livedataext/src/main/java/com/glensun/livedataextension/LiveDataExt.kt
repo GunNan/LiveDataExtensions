@@ -1068,6 +1068,9 @@ inline fun <T> List<T?>.isItemContainsNull(): Boolean {
 
 inline fun <T> List<T?>.isItemNonNull(): Boolean = !this.isItemContainsNull()
 
+inline fun <X> MutableLiveData<X>.trigger() {
+    this.postValue(this.value)
+}
 
 //
 //// 延迟发射, 注意LiveData的特点，如果lifecycle的生命周期没走到START，那是不会发射的

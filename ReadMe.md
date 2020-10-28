@@ -125,7 +125,8 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
  - `doBefore` 在LiveData触发之前触发
  - `doAfter` 在LiveData触发之后触发
  - `defaultIfNull` 当值为null的默认值
-
+ - `trigger` 手动触发
+ 
 **Filtering**
 
  - `filter` 只有当过滤条件满足时才会触发

@@ -5,6 +5,7 @@
     <string name="zip">zip</string>
     <string name="crash">crash</string>
     <string name="switchmap">switchmap</string>
+    <string name="filter">filter</string>
     <string name="get_glen">glen</string>
     <string name="get_sun">sun</string>
     <string name="get_hello">hello</string>

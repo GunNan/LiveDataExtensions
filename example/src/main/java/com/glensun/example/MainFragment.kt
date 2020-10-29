@@ -31,6 +31,9 @@ class MainFragment : Fragment() {
         root.findViewById<Button>(R.id.switch_map_btn).setOnClickListener {
             findNavController().navigate(R.id.action_mainFragment_to_switchmapExampleFragment)
         }
+        root.findViewById<Button>(R.id.filter_btn).setOnClickListener {
+            findNavController().navigate(R.id.action_mainFragment_to_filterExampleFragment)
+        }
         return root
     }
 }

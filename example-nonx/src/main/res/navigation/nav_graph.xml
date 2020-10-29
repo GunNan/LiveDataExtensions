@@ -37,7 +37,11 @@
         android:label="switchmap_example_fragment"
         tools:layout="@layout/switchmap_example_fragment" />
 
-
+    <fragment
+        android:id="@+id/filterExampleFragment"
+        android:name="com.glensun.examplenonx.FilterExampleFragment"
+        android:label="filter_example_fragment"
+        tools:layout="@layout/filter_example_fragment" />
     <fragment
         android:id="@+id/mainFragment"
         android:name="com.glensun.examplenonx.MainFragment"
@@ -58,5 +62,8 @@
         <action
             android:id="@+id/action_mainFragment_to_switchmapExampleFragment"
             app:destination="@id/switchMapExampleFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_filterExampleFragment"
+            app:destination="@id/filterExampleFragment" />
     </fragment>
 </navigation>

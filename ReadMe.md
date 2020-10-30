@@ -6,6 +6,7 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 
 ## API说明
 
+
 **Combining**
 
  - `merge`, `LiveData.merge`  多个相同类型的liveData合并，产生一个新的liveData

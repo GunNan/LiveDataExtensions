@@ -63,6 +63,7 @@ LiveDataExtensions提供一些类似于RxJava操作符的kotlin扩展方法
 ```
 
  - `combine`, `LiveData.combine`  多个不同类型的liveData合并，产生一个新的liveData
+ 
 ```
     -----------------[1]----------------[5]----[4]-------------------->
 
